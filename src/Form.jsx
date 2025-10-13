@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const Form = ({ onBack }) => {
+const Form = ({ onBack, onClose }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [isValidPromoCode, setIsValidPromoCode] = useState(false);
   const [promoMessage, setPromoMessage] = useState('');
@@ -8,6 +8,7 @@ const Form = ({ onBack }) => {
   const [showRequirementModal, setShowRequirementModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [fileName, setFileName] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const [utmParams, setUtmParams] = useState({
     utm_source: '',
     utm_medium: '',
@@ -21,13 +22,19 @@ const Form = ({ onBack }) => {
     phoneNumber: '',
     position: '',
     industry: '',
-    howYouKnow: '',
     specialcode: '',
     receipt: null
   });
 
+  // Get API endpoint from environment variable or use default
+  const API_ENDPOINT = import.meta.env.VITE_API_BASE_URL || 
+    'https://i2o1s0eemh.execute-api.ap-southeast-1.amazonaws.com/dev2/register';
+
   // Capture UTM parameters on component mount
   useEffect(() => {
+    console.log('API Base URL:', import.meta.env.VITE_API_BASE_URL);
+    console.log('Environment variables:', import.meta.env);
+  console.log('API Endpoint:', API_ENDPOINT);
     const urlParams = new URLSearchParams(window.location.search);
     const utmData = {
       utm_source: urlParams.get('utm_source') || '',
@@ -55,13 +62,32 @@ const Form = ({ onBack }) => {
     if (name === 'specialcode') {
       checkPromoCode(value);
     }
+    
+    // Clear error message when user starts typing
+    if (errorMessage) {
+      setErrorMessage('');
+    }
   };
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        setErrorMessage('File size must be less than 5MB');
+        return;
+      }
+      
+      // Validate file type
+      const validTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
+      if (!validTypes.includes(file.type)) {
+        setErrorMessage('Please upload a PDF, JPG, or PNG file');
+        return;
+      }
+      
       setFormData(prev => ({ ...prev, receipt: file }));
       setFileName(file.name);
+      setErrorMessage('');
     }
   };
 
@@ -81,15 +107,45 @@ const Form = ({ onBack }) => {
     }
   };
 
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
+
   const validateCurrentStep = () => {
     if (currentStep === 1) {
-      return formData.fullName && formData.email && formData.phoneNumber;
+      if (!formData.fullName.trim()) {
+        setErrorMessage('Please enter your full name');
+        return false;
+      }
+      if (!formData.email.trim()) {
+        setErrorMessage('Please enter your email');
+        return false;
+      }
+      if (!validateEmail(formData.email)) {
+        setErrorMessage('Please enter a valid email address');
+        return false;
+      }
+      if (!formData.phoneNumber.trim()) {
+        setErrorMessage('Please enter your phone number');
+        return false;
+      }
+      if (formData.phoneNumber.length < 8) {
+        setErrorMessage('Phone number must be at least 8 digits');
+        return false;
+      }
+      return true;
     }
     if (currentStep === 2) {
-      return formData.position && formData.industry;
-    }
-    if (currentStep === 3) {
-      return formData.howYouKnow;
+      if (!formData.position.trim()) {
+        setErrorMessage('Please enter your position');
+        return false;
+      }
+      if (!formData.industry) {
+        setErrorMessage('Please select your industry');
+        return false;
+      }
+      return true;
     }
     if (currentStep === 4) {
       if (isValidPromoCode) return true;
@@ -104,6 +160,7 @@ const Form = ({ onBack }) => {
 
   const nextStep = () => {
     if (validateCurrentStep()) {
+      setErrorMessage('');
       if (currentStep < totalSteps) {
         setCurrentStep(currentStep + 1);
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -116,6 +173,7 @@ const Form = ({ onBack }) => {
   const prevStep = () => {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
+      setErrorMessage('');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
@@ -131,63 +189,101 @@ const Form = ({ onBack }) => {
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
-
-    // Get UTM params from state or sessionStorage
-    const storedUtmParams = sessionStorage.getItem('utm_params');
-    const finalUtmParams = storedUtmParams ? JSON.parse(storedUtmParams) : utmParams;
-
-    const submitData = {
-      fullName: formData.fullName,
-      email: formData.email,
-      phone: formData.countryCode + formData.phoneNumber,
-      position: formData.position,
-      industry: formData.industry,
-      howYouKnow: formData.howYouKnow,
-      specialcode: formData.specialcode,
-      isPromoCodeUsed: isValidPromoCode,
-      promoCode: isValidPromoCode ? formData.specialcode.toUpperCase().trim() : '',
-      // Add UTM parameters
-      utm_source: finalUtmParams.utm_source,
-      utm_medium: finalUtmParams.utm_medium,
-      utm_campaign: finalUtmParams.utm_campaign
-    };
-
-    if (!isValidPromoCode && formData.receipt) {
-      try {
-        const base64Data = await fileToBase64(formData.receipt);
-        submitData.receiptBase64 = base64Data.split(',')[1];
-        submitData.receiptFilename = formData.receipt.name;
-      } catch (error) {
-        alert('Error processing receipt. Please try again.');
-        setIsSubmitting(false);
-        return;
-      }
-    }
+    setErrorMessage('');
 
     try {
-      const response = await fetch('https://i2o1s0eemh.execute-api.ap-southeast-1.amazonaws.com/dev2/register', {
+      // Get UTM params from state or sessionStorage
+      const storedUtmParams = sessionStorage.getItem('utm_params');
+      const finalUtmParams = storedUtmParams ? JSON.parse(storedUtmParams) : utmParams;
+
+      const submitData = {
+        fullName: formData.fullName.trim(),
+        email: formData.email.toLowerCase().trim(),
+        phone: formData.countryCode + formData.phoneNumber.trim(),
+        position: formData.position.trim(),
+        industry: formData.industry,
+        specialcode: formData.specialcode.trim(),
+        isPromoCodeUsed: isValidPromoCode,
+        promoCode: isValidPromoCode ? formData.specialcode.toUpperCase().trim() : '',
+        // Add UTM parameters
+        utm_source: finalUtmParams.utm_source,
+        utm_medium: finalUtmParams.utm_medium,
+        utm_campaign: finalUtmParams.utm_campaign
+      };
+
+      // Handle receipt upload if no promo code
+      if (!isValidPromoCode && formData.receipt) {
+        try {
+          const base64Data = await fileToBase64(formData.receipt);
+          submitData.receiptBase64 = base64Data.split(',')[1];
+          submitData.receiptFilename = formData.receipt.name;
+        } catch (error) {
+          console.error('File processing error:', error);
+          setErrorMessage('Error processing receipt. Please try again.');
+          setIsSubmitting(false);
+          return;
+        }
+      }
+
+      // Submit to API
+      const response = await fetch(API_ENDPOINT, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify(submitData)
       });
 
-      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+      const responseData = await response.json();
 
+      if (!response.ok) {
+        // Handle specific error cases
+        if (response.status === 400) {
+          setErrorMessage(responseData.error?.message || 'Invalid submission. Please check your information.');
+        } else if (response.status === 409) {
+          setErrorMessage('This email has already been registered for this event.');
+        } else if (response.status === 500) {
+          setErrorMessage('Server error. Please try again later or contact support.');
+        } else {
+          setErrorMessage('Registration failed. Please try again.');
+        }
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      // Success
+      console.log('Registration successful:', responseData);
       setShowSuccessModal(true);
+      
+      // Reset form
       setFormData({
-        fullName: '', email: '', countryCode: '60', phoneNumber: '',
-        position: '', industry: '', howYouKnow: '',
-        specialcode: '', receipt: null
+        fullName: '', 
+        email: '', 
+        countryCode: '60', 
+        phoneNumber: '',
+        position: '', 
+        industry: '', 
+        specialcode: '', 
+        receipt: null
       });
       setCurrentStep(1);
       setIsValidPromoCode(false);
       setPromoMessage('');
       setFileName('');
+
     } catch (error) {
-      alert('Registration failed. Please try again or contact Amy at 017-661 7262.');
+      console.error('Registration error:', error);
+      if (!errorMessage) {
+        setErrorMessage('Registration failed. Please try again or contact Amy at 017-661 7262.');
+      }
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleSuccessClose = () => {
+    setShowSuccessModal(false);
+    if (onClose) onClose();
+    if (onBack) onBack();
   };
 
   const progress = (currentStep / totalSteps) * 100;
@@ -197,7 +293,10 @@ const Form = ({ onBack }) => {
       <div className="max-w-lg mx-auto px-6 py-6">
         {/* Header */}
         <div className="text-center mb-6">
-          <button onClick={onBack} className="mb-4 text-purple-400 hover:text-purple-300 flex items-center gap-2 transition-colors">
+          <button 
+            onClick={onBack || onClose} 
+            className="mb-4 text-purple-400 hover:text-purple-300 flex items-center gap-2 transition-colors"
+          >
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
             </svg>
@@ -206,6 +305,26 @@ const Form = ({ onBack }) => {
           <h1 className="text-2xl font-bold mb-1">Event Registration</h1>
           <p className="text-gray-400 text-sm">Circle Confetti Club Exclusive Event</p>
         </div>
+
+        {/* Error Message */}
+        {errorMessage && (
+          <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 mb-6 flex items-start gap-3">
+            <svg className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+            </svg>
+            <div className="flex-1">
+              <p className="text-red-400 text-sm font-medium">{errorMessage}</p>
+            </div>
+            <button 
+              onClick={() => setErrorMessage('')}
+              className="text-red-400 hover:text-red-300"
+            >
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+            </button>
+          </div>
+        )}
 
         {/* Progress Bar */}
         <div className="bg-[#1a1a2e] h-1.5 rounded-full overflow-hidden mb-8">
@@ -253,6 +372,7 @@ const Form = ({ onBack }) => {
                   onChange={handleInputChange}
                   placeholder="Enter your full name"
                   className="w-full px-4 py-3 bg-[#0f0f23] border-2 border-[#2d2d44] rounded-lg text-white focus:outline-none focus:border-purple-500 transition-colors"
+                  required
                 />
               </div>
 
@@ -268,6 +388,7 @@ const Form = ({ onBack }) => {
                   onChange={handleInputChange}
                   placeholder="your.email@example.com"
                   className="w-full px-4 py-3 bg-[#0f0f23] border-2 border-[#2d2d44] rounded-lg text-white focus:outline-none focus:border-purple-500 transition-colors"
+                  required
                 />
               </div>
 
@@ -306,6 +427,7 @@ const Form = ({ onBack }) => {
                     onChange={handleInputChange}
                     placeholder="123456789"
                     className="px-4 py-3 bg-[#0f0f23] border-2 border-[#2d2d44] rounded-lg text-white focus:outline-none focus:border-purple-500 transition-colors"
+                    required
                   />
                 </div>
               </div>
@@ -328,6 +450,7 @@ const Form = ({ onBack }) => {
                   onChange={handleInputChange}
                   placeholder="Your job title"
                   className="w-full px-4 py-3 bg-[#0f0f23] border-2 border-[#2d2d44] rounded-lg text-white focus:outline-none focus:border-purple-500 transition-colors"
+                  required
                 />
               </div>
 
@@ -338,6 +461,7 @@ const Form = ({ onBack }) => {
                   value={formData.industry}
                   onChange={handleInputChange}
                   className="w-full px-4 py-3 bg-[#0f0f23] border-2 border-[#2d2d44] rounded-lg text-white focus:outline-none focus:border-purple-500 cursor-pointer"
+                  required
                 >
                   <option value="">Choose your industry</option>
                   <option value="Agriculture, Forestry & Plantation">Agriculture, Forestry & Plantation</option>
@@ -378,30 +502,7 @@ const Form = ({ onBack }) => {
             <h2 className="text-lg font-semibold text-purple-300 mb-6">Event Information</h2>
             
             <div className="space-y-5">
-              <div>
-                <label className="block text-sm font-medium text-gray-200 mb-2">How did you hear about us? <span className="text-red-500">*</span></label>
-                <select
-                  name="howYouKnow"
-                  value={formData.howYouKnow}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 bg-[#0f0f23] border-2 border-[#2d2d44] rounded-lg text-white focus:outline-none focus:border-purple-500 cursor-pointer"
-                >
-                  <option value="">Please select</option>
-                  <option value="Social Media (Xhs)">Social Media (Xhs)</option>
-                  <option value="Social Media (Facebook)">Social Media (Facebook)</option>
-                  <option value="Social Media (IG)">Social Media (Instagram)</option>
-                  <option value="Friend's / Family Recommendation">Friend's Recommendation</option>
-                  <option value="IBO">IBO</option>
-                  <option value="Zera Creator Global Sdn Bhd">Zera Creator Global Sdn Bhd</option>
-                  <option value="PP-RED Malaysia">PP-RED Malaysia</option>
-                  <option value="Instababe Malaysia">Instababe Malaysia</option>
-                  <option value="X Banker Club">X Banker Club</option>
-                  <option value="Goddess of Nature">Goddess of Nature</option>
-                  <option value="RG Networking">RG Networking</option>
-                  <option value="Club 037">Club 037</option>
-                  <option value="Others">Others</option>
-                </select>
-              </div>
+              
 
               <div>
                 <label className="block text-sm font-medium text-gray-200 mb-2">
@@ -468,7 +569,7 @@ const Form = ({ onBack }) => {
                 <div className="mt-5">
                   <label className="block text-sm font-medium text-gray-200 mb-2">
                     Upload Payment Receipt <span className="text-red-500">*</span>
-                    <span className="block text-xs text-gray-500 mt-1">Upload your transfer receipt (PDF/JPG/PNG)</span>
+                    <span className="block text-xs text-gray-500 mt-1">Upload your transfer receipt (PDF/JPG/PNG, max 5MB)</span>
                   </label>
                   <div className={`relative border-2 border-dashed rounded-lg p-4 hover:border-purple-500 transition-colors cursor-pointer bg-[#0f0f23] ${
                     fileName ? 'border-green-500 border-solid' : 'border-[#2d2d44]'
@@ -503,7 +604,8 @@ const Form = ({ onBack }) => {
           {currentStep > 1 && (
             <button 
               onClick={prevStep} 
-              className="px-6 py-3 bg-[#1a1a2e] border-2 border-[#2d2d44] rounded-lg text-gray-400 hover:text-white hover:bg-[#2d2d44] transition-colors flex items-center gap-2"
+              disabled={isSubmitting}
+              className="px-6 py-3 bg-[#1a1a2e] border-2 border-[#2d2d44] rounded-lg text-gray-400 hover:text-white hover:bg-[#2d2d44] transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
@@ -545,7 +647,7 @@ const Form = ({ onBack }) => {
       {showSuccessModal && (
         <div 
           className="fixed inset-0 bg-black/85 backdrop-blur-sm flex items-center justify-center p-5 z-50" 
-          onClick={() => setShowSuccessModal(false)}
+          onClick={handleSuccessClose}
         >
           <div 
             className="bg-[#16213e] p-8 rounded-2xl max-w-md w-full border border-[#2d2d44] animate-[modalSlideIn_0.3s_ease]" 
@@ -562,7 +664,7 @@ const Form = ({ onBack }) => {
               Contact Amy at 017-661 7262 if you need assistance.
             </p>
             <button 
-              onClick={() => setShowSuccessModal(false)} 
+              onClick={handleSuccessClose} 
               className="w-full px-6 py-3 bg-gradient-to-r from-purple-500 to-purple-400 rounded-lg text-white font-semibold hover:shadow-lg transition-all"
             >
               Close
