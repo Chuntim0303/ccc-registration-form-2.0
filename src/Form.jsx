@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import industries from './components/industryOptions'; // Import the options
+import countryCodes from './components/countryCodes'; // Import the country codes
 
 const Form = ({ onBack, onClose }) => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -14,11 +16,11 @@ const Form = ({ onBack, onClose }) => {
     utm_medium: '',
     utm_campaign: ''
   });
-  
+
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
-    countryCode: '60',
+    countryCode: '60', // Default to Malaysia
     phoneNumber: '',
     position: '',
     industry: '',
@@ -27,14 +29,20 @@ const Form = ({ onBack, onClose }) => {
   });
 
   // Get API endpoint from environment variable or use default
-  const API_ENDPOINT = import.meta.env.VITE_API_BASE_URL || 
-    'https://i2o1s0eemh.execute-api.ap-southeast-1.amazonaws.com/dev2/register';
+  const API_ENDPOINT = import.meta.env.VITE_API_BASE_URL ||
+    'https://2ko8yhgag2.execute-api.ap-southeast-1.amazonaws.com/dev/register';
+
+  // API endpoint for promo code validation
+  const PROMO_CODE_CHECK_ENDPOINT = import.meta.env.VITE_PROMO_CODE_CHECK_URL ||
+    'https://2ko8yhgag2.execute-api.ap-southeast-1.amazonaws.com/dev/check-promo-code';
 
   // Capture UTM parameters on component mount
   useEffect(() => {
     console.log('API Base URL:', import.meta.env.VITE_API_BASE_URL);
     console.log('Environment variables:', import.meta.env);
-  console.log('API Endpoint:', API_ENDPOINT);
+    console.log('Registration API Endpoint:', API_ENDPOINT);
+    console.log('Promo Code Check API Endpoint:', PROMO_CODE_CHECK_ENDPOINT);
+
     const urlParams = new URLSearchParams(window.location.search);
     const utmData = {
       utm_source: urlParams.get('utm_source') || '',
@@ -42,27 +50,21 @@ const Form = ({ onBack, onClose }) => {
       utm_campaign: urlParams.get('utm_campaign') || ''
     };
     setUtmParams(utmData);
-    
+
     // Store in sessionStorage for persistence
     sessionStorage.setItem('utm_params', JSON.stringify(utmData));
   }, []);
 
-  const validPromoCodes = [
-    'CON01', 'SN01', 'SU01', 'RE01', 'ZE01', 'CE01', 'ZA01', 'WE01', 
-    'FI01', 'FE01', 'AD01', 'FA01', 'KE01', 'SM01', 'SA01', 'SH01', 
-    'HA01', 'PH01', 'ME01', 'JO01', 'DA01', 'MI01', 'YC01'
-  ];
-
-  const totalSteps = 4;
+  const totalSteps = 3;
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    
+
     if (name === 'specialcode') {
       checkPromoCode(value);
     }
-    
+
     // Clear error message when user starts typing
     if (errorMessage) {
       setErrorMessage('');
@@ -77,32 +79,62 @@ const Form = ({ onBack, onClose }) => {
         setErrorMessage('File size must be less than 5MB');
         return;
       }
-      
+
       // Validate file type
       const validTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
       if (!validTypes.includes(file.type)) {
         setErrorMessage('Please upload a PDF, JPG, or PNG file');
         return;
       }
-      
+
       setFormData(prev => ({ ...prev, receipt: file }));
       setFileName(file.name);
       setErrorMessage('');
     }
   };
 
-  const checkPromoCode = (code) => {
-    if (code === '') {
+  const checkPromoCode = async (code) => {
+    if (code.trim() === '') {
       setPromoMessage('');
       setIsValidPromoCode(false);
       return;
     }
 
-    if (validPromoCodes.includes(code.toUpperCase())) {
-      setPromoMessage('Valid code! Registration is free.');
-      setIsValidPromoCode(true);
-    } else {
-      setPromoMessage('Invalid promo code.');
+    // Call backend to validate promo code
+    await checkPromoCodeOnBackend(code);
+  };
+
+  const checkPromoCodeOnBackend = async (code) => {
+    setPromoMessage('Checking promo code...');
+    setIsValidPromoCode(false);
+
+    try {
+      const storedUtmParams = sessionStorage.getItem('utm_params');
+      const finalUtmParams = storedUtmParams ? JSON.parse(storedUtmParams) : utmParams;
+
+      const response = await fetch(PROMO_CODE_CHECK_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          promoCode: code.toUpperCase().trim(),
+          utm_campaign: finalUtmParams.utm_campaign || 'CIRCLE_CONFETTI_2025'
+        }),
+      });
+
+      const responseData = await response.json();
+
+      if (response.ok && responseData.isValid) {
+        setPromoMessage('Valid code! Registration is free.');
+        setIsValidPromoCode(true);
+      } else {
+        setPromoMessage(responseData.message || 'Invalid promo code.');
+        setIsValidPromoCode(false);
+      }
+    } catch (error) {
+      console.error('Error checking promo code:', error);
+      setPromoMessage('Error verifying promo code. Please try again.');
       setIsValidPromoCode(false);
     }
   };
@@ -147,9 +179,12 @@ const Form = ({ onBack, onClose }) => {
       }
       return true;
     }
-    if (currentStep === 4) {
-      if (isValidPromoCode) return true;
-      if (!formData.receipt) {
+    if (currentStep === 3) {
+      if (formData.specialcode.trim() && !isValidPromoCode) {
+        setErrorMessage('Please enter a valid promo code or clear the field.');
+        return false;
+      }
+      if (!isValidPromoCode && !formData.receipt) {
         setShowRequirementModal(true);
         return false;
       }
@@ -192,7 +227,6 @@ const Form = ({ onBack, onClose }) => {
     setErrorMessage('');
 
     try {
-      // Get UTM params from state or sessionStorage
       const storedUtmParams = sessionStorage.getItem('utm_params');
       const finalUtmParams = storedUtmParams ? JSON.parse(storedUtmParams) : utmParams;
 
@@ -202,16 +236,14 @@ const Form = ({ onBack, onClose }) => {
         phone: formData.countryCode + formData.phoneNumber.trim(),
         position: formData.position.trim(),
         industry: formData.industry,
-        specialcode: formData.specialcode.trim(),
-        isPromoCodeUsed: isValidPromoCode,
-        promoCode: isValidPromoCode ? formData.specialcode.toUpperCase().trim() : '',
-        // Add UTM parameters
+        promoCode: formData.specialcode.toUpperCase().trim(),
+        isPromoCodeUsed: isValidPromoCode, // Add isPromoCodeUsed to match backend expectation
         utm_source: finalUtmParams.utm_source,
         utm_medium: finalUtmParams.utm_medium,
         utm_campaign: finalUtmParams.utm_campaign
       };
 
-      // Handle receipt upload if no promo code
+      // Handle receipt upload if no valid promo code is used
       if (!isValidPromoCode && formData.receipt) {
         try {
           const base64Data = await fileToBase64(formData.receipt);
@@ -228,7 +260,7 @@ const Form = ({ onBack, onClose }) => {
       // Submit to API
       const response = await fetch(API_ENDPOINT, {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(submitData)
@@ -237,9 +269,17 @@ const Form = ({ onBack, onClose }) => {
       const responseData = await response.json();
 
       if (!response.ok) {
-        // Handle specific error cases
         if (response.status === 400) {
-          setErrorMessage(responseData.error?.message || 'Invalid submission. Please check your information.');
+          if (responseData.error === 'Invalid JSON') {
+            setErrorMessage('Invalid submission. Please check your information.');
+          } else if (responseData.error === 'Validation failed') {
+            setErrorMessage(`Validation error: ${responseData.details.join(', ')}`);
+          } else if (responseData.error === 'PaymentRequired') {
+            setErrorMessage('Payment receipt is required for non-promo code registrations.');
+            setShowRequirementModal(true);
+          } else {
+            setErrorMessage(responseData.message || 'Invalid submission. Please check your information.');
+          }
         } else if (response.status === 409) {
           setErrorMessage('This email has already been registered for this event.');
         } else if (response.status === 500) {
@@ -253,16 +293,16 @@ const Form = ({ onBack, onClose }) => {
       // Success
       console.log('Registration successful:', responseData);
       setShowSuccessModal(true);
-      
+
       // Reset form
       setFormData({
-        fullName: '', 
-        email: '', 
-        countryCode: '60', 
+        fullName: '',
+        email: '',
+        countryCode: '60',
         phoneNumber: '',
-        position: '', 
-        industry: '', 
-        specialcode: '', 
+        position: '',
+        industry: '',
+        specialcode: '',
         receipt: null
       });
       setCurrentStep(1);
@@ -293,8 +333,8 @@ const Form = ({ onBack, onClose }) => {
       <div className="max-w-lg mx-auto px-6 py-6">
         {/* Header */}
         <div className="text-center mb-6">
-          <button 
-            onClick={onBack || onClose} 
+          <button
+            onClick={onBack || onClose}
             className="mb-4 text-purple-400 hover:text-purple-300 flex items-center gap-2 transition-colors"
           >
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -315,7 +355,7 @@ const Form = ({ onBack, onClose }) => {
             <div className="flex-1">
               <p className="text-red-400 text-sm font-medium">{errorMessage}</p>
             </div>
-            <button 
+            <button
               onClick={() => setErrorMessage('')}
               className="text-red-400 hover:text-red-300"
             >
@@ -328,15 +368,15 @@ const Form = ({ onBack, onClose }) => {
 
         {/* Progress Bar */}
         <div className="bg-[#1a1a2e] h-1.5 rounded-full overflow-hidden mb-8">
-          <div 
-            className="h-full bg-gradient-to-r from-purple-500 to-purple-400 transition-all duration-400" 
-            style={{ width: `${progress}%` }} 
+          <div
+            className="h-full bg-gradient-to-r from-purple-500 to-purple-400 transition-all duration-400"
+            style={{ width: `${progress}%` }}
           />
         </div>
 
         {/* Step Indicator */}
         <div className="flex justify-between items-center mb-10 px-2">
-          {[1, 2, 3, 4].map((step, idx) => (
+          {[1, 2, 3].map((step, idx) => (
             <React.Fragment key={step}>
               <div className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-semibold transition-all ${
                 step < currentStep ? 'bg-gradient-to-br from-green-500 to-green-600 text-white' :
@@ -345,7 +385,7 @@ const Form = ({ onBack, onClose }) => {
               }`}>
                 {step < currentStep ? '✓' : step}
               </div>
-              {idx < 3 && (
+              {idx < 2 && (
                 <div className="flex-1 h-0.5 mx-2 bg-[#2d2d44] relative">
                   {step < currentStep && <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-green-600" />}
                 </div>
@@ -358,7 +398,7 @@ const Form = ({ onBack, onClose }) => {
         {currentStep === 1 && (
           <div className="bg-[#16213e] rounded-2xl p-8 border border-[#2d2d44] mb-6">
             <h2 className="text-lg font-semibold text-purple-300 mb-6">Personal Information</h2>
-            
+
             <div className="space-y-5">
               <div>
                 <label className="block text-sm font-medium text-gray-200 mb-2">
@@ -401,24 +441,11 @@ const Form = ({ onBack, onClose }) => {
                     onChange={handleInputChange}
                     className="px-4 py-3 bg-[#0f0f23] border-2 border-[#2d2d44] rounded-lg text-white focus:outline-none focus:border-purple-500 cursor-pointer"
                   >
-                    <option value="60">🇲🇾 +60</option>
-                    <option value="65">🇸🇬 +65</option>
-                    <option value="86">🇨🇳 +86</option>
-                    <option value="852">🇭🇰 +852</option>
-                    <option value="886">🇹🇼 +886</option>
-                    <option value="66">🇹🇭 +66</option>
-                    <option value="84">🇻🇳 +84</option>
-                    <option value="62">🇮🇩 +62</option>
-                    <option value="63">🇵🇭 +63</option>
-                    <option value="91">🇮🇳 +91</option>
-                    <option value="61">🇦🇺 +61</option>
-                    <option value="64">🇳🇿 +64</option>
-                    <option value="81">🇯🇵 +81</option>
-                    <option value="82">🇰🇷 +82</option>
-                    <option value="44">🇬🇧 +44</option>
-                    <option value="1">🇺🇸 +1</option>
-                    <option value="33">🇫🇷 +33</option>
-                    <option value="49">🇩🇪 +49</option>
+                    {countryCodes.map((country, index) => (
+                      <option key={index} value={country.code}>
+                        {country.flag} +{country.code}
+                      </option>
+                    ))}
                   </select>
                   <input
                     type="tel"
@@ -439,7 +466,7 @@ const Form = ({ onBack, onClose }) => {
         {currentStep === 2 && (
           <div className="bg-[#16213e] rounded-2xl p-8 border border-[#2d2d44] mb-6">
             <h2 className="text-lg font-semibold text-purple-300 mb-6">Professional Information</h2>
-            
+
             <div className="space-y-5">
               <div>
                 <label className="block text-sm font-medium text-gray-200 mb-2">Position <span className="text-red-500">*</span></label>
@@ -464,61 +491,36 @@ const Form = ({ onBack, onClose }) => {
                   required
                 >
                   <option value="">Choose your industry</option>
-                  <option value="Agriculture, Forestry & Plantation">Agriculture, Forestry & Plantation</option>
-                  <option value="Automotive (Sales, Services, Parts)">Automotive (Sales, Services, Parts)</option>
-                  <option value="Banking & Finance">Banking & Finance</option>
-                  <option value="Construction & Building">Construction & Building</option>
-                  <option value="Creative & Design (Photography, Art, etc.)">Creative & Design (Photography, Art, etc.)</option>
-                  <option value="Education (School, Tuition, Training)">Education (School, Tuition, Training)</option>
-                  <option value="Engineering & Technical Services">Engineering & Technical Services</option>
-                  <option value="Food & Beverage (F&B)">Food & Beverage (F&B)</option>
-                  <option value="Healthcare (Clinic, Hospital, Wellness)">Healthcare (Clinic, Hospital, Wellness)</option>
-                  <option value="Hospitality (Hotels, Events, etc.)">Hospitality (Hotels, Events, etc.)</option>
-                  <option value="Information Technology (IT & Software)">Information Technology (IT & Software)</option>
-                  <option value="Insurance & Takaful">Insurance & Takaful</option>
-                  <option value="Legal, Accounting & Consulting Services">Legal, Accounting & Consulting Services</option>
-                  <option value="Manufacturing (General)">Manufacturing (General)</option>
-                  <option value="Media, Marketing & Advertising">Media, Marketing & Advertising</option>
-                  <option value="Property & Real Estate">Property & Real Estate</option>
-                  <option value="Retail (Shops, E-commerce, etc.)">Retail (Shops, E-commerce, etc.)</option>
-                  <option value="Telecommunications">Telecommunications</option>
-                  <option value="Transportation & Logistics">Transportation & Logistics</option>
-                  <option value="Travel, Tourism & Leisure">Travel, Tourism & Leisure</option>
-                  <option value="Student">Student</option>
-                  <option value="Government / Public Sector">Government / Public Sector</option>
-                  <option value="NGO / Non-Profit / Religious Organization">NGO / Non-Profit / Religious Organization</option>
-                  <option value="Homemaker / Retired">Homemaker / Retired</option>
-                  <option value="Unemployed / Jobseeker">Unemployed / Jobseeker</option>
-                  <option value="Others">Others</option>
+                  {industries.map((industry, index) => (
+                    <option key={index} value={industry}>
+                      {industry}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
           </div>
         )}
 
-        {/* Step 3: Event Information */}
+        {/* Step 3: Combined Event Information & Payment */}
         {currentStep === 3 && (
-          <div className="bg-[#16213e] rounded-2xl p-8 border border-[#2d2d44] mb-6">
-            <h2 className="text-lg font-semibold text-purple-300 mb-6">Event Information</h2>
-            
-            <div className="space-y-5">
-              
+          <div>
+            <h2 className="text-lg font-semibold text-purple-300 mb-6 text-center">Complete Registration</h2>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-200 mb-2">
-                  Special Code
-                  <span className="block text-xs text-gray-500 mt-1">Enter if you have one</span>
-                </label>
+            {/* Promo Code Section */}
+            <div className="bg-[#16213e] rounded-2xl p-6 border border-[#2d2d44] mb-6">
+              <h3 className="text-base font-semibold text-white mb-4">Special Code</h3>
+              <div className="space-y-3">
                 <input
                   type="text"
                   name="specialcode"
                   value={formData.specialcode}
                   onChange={handleInputChange}
-                  placeholder="Enter promo code"
+                  placeholder="Enter promo code (optional)"
                   className="w-full px-4 py-3 bg-[#0f0f23] border-2 border-[#2d2d44] rounded-lg text-white focus:outline-none focus:border-purple-500 transition-colors"
                 />
                 {promoMessage && (
-                  <div className={`mt-2 px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-2 ${
+                  <div className={`px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-2 ${
                     isValidPromoCode ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 'bg-red-500/10 text-red-400 border border-red-500/20'
                   }`}>
                     {isValidPromoCode ? (
@@ -534,35 +536,31 @@ const Form = ({ onBack, onClose }) => {
                   </div>
                 )}
               </div>
-            </div>
-          </div>
-        )}
 
-        {/* Step 4: Payment/Summary */}
-        {currentStep === 4 && (
-          <div>
-            <h2 className="text-lg font-semibold text-purple-300 mb-6 text-center">Complete Registration</h2>
-            
-            {isValidPromoCode ? (
-              <div className="bg-gradient-to-r from-green-500 to-green-600 p-4 rounded-xl text-center mb-6 text-white font-medium flex items-center justify-center gap-2">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span>🎉 Your promo code is valid - Registration is FREE!</span>
-              </div>
-            ) : (
+              {/* Success message for valid promo code */}
+              {isValidPromoCode && (
+                <div className="mt-4 bg-gradient-to-r from-green-500 to-green-600 p-4 rounded-xl text-center text-white font-medium flex items-center justify-center gap-2">
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  <span>🎉 Your promo code is valid - Registration is FREE! No receipt required.</span>
+                </div>
+              )}
+            </div>
+
+            {/* Payment Section - Only show if no valid promo code */}
+            {!isValidPromoCode && (
               <div className="bg-[#1a1a2e] p-6 rounded-xl border border-[#2d2d44] mb-6">
                 <h3 className="text-base font-medium text-white mb-3 text-center">Payment Instructions</h3>
                 <p className="text-gray-400 text-sm mb-4 text-center">Transfer RM159 to the account below</p>
-                
+
                 <div className="max-w-[240px] mx-auto mb-4">
-                  <div className="bg-gray-700 rounded-lg aspect-square flex items-center justify-center text-gray-400 text-sm p-4">
-                    <div className="text-center">
-                      <svg className="w-16 h-16 mx-auto mb-2 opacity-50" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
-                      </svg>
-                      QR Code Placeholder
-                    </div>
+                  <div className="bg-gray-700 rounded-lg aspect-square flex items-center justify-center p-4">
+                    <img
+                      src="/qr_code.jpg"
+                      alt="QR Code"
+                      className="w-full h-full object-contain rounded-lg"
+                    />
                   </div>
                 </div>
 
@@ -726,5 +724,4 @@ const Form = ({ onBack, onClose }) => {
   );
 };
 
-  
 export default Form;
