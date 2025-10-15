@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import industries from './components/industryOptions';
@@ -281,7 +280,7 @@ const Form = ({ onClose }) => {
   const progress = (currentStep / totalSteps) * 100;
 
   return (
-    <div className="relative bg-black/90 backdrop-blur-lg text-white rounded-2xl sm:rounded-3xl shadow-2xl border border-pink-500/30 w-full mx-2 sm:max-w-2xl sm:mx-auto my-2 sm:my-12 p-4 sm:p-10">
+    <div className="relative bg-black/90 backdrop-blur-lg text-white rounded-2xl sm:rounded-3xl shadow-2xl border border-pink-500/30 max-w-md sm:max-w-2xl mx-auto my-4 sm:my-12 p-4 sm:p-10">
       {/* Close Button */}
       <button
         onClick={onClose}
@@ -309,7 +308,7 @@ const Form = ({ onClose }) => {
             className="text-pink-300 hover:text-pink-400 focus:outline-none focus:ring-2 focus:ring-pink-500 rounded-full p-1"
             aria-label="Dismiss error"
           >
-            <X size=16 className="sm:w-5 sm:h-5" />
+            <X size={16} className="sm:w-5 sm:h-5" />
           </button>
         </div>
       )}
@@ -519,7 +518,7 @@ const Form = ({ onClose }) => {
                     <span className="block text-xs sm:text-sm text-purple-200/70 mt-1">PDF, JPG, or PNG (max 5MB)</span>
                   </label>
                   <div className={`relative border-2 border-dashed rounded-xl p-4 sm:p-6 transition-all cursor-pointer ${
-                    fileName ? 'border-pink-500 border-solid bg-pink-500/20' : 'border-purple-500/40 hover:border-pink-500'
+                    fileName ? 'border-pink-500 border:solid bg-pink-500/20' : 'border-purple-500/40 hover:border-pink-500'
                   }`}>
                     <input
                       type="file"
@@ -575,7 +574,7 @@ const Form = ({ onClose }) => {
       {/* Success Modal */}
       {showSuccessModal && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/80 backdrop-blur-md" onClick={handleSuccessClose}>
-          <div className="bg-black/90 p-6 sm:p-10 rounded-2xl sm:rounded-3xl w-[calc(100%-16px)] sm:max-w-md mx-2 border border-pink-500/30 shadow-[0_0_30px_rgba(236,72,153,0.3)]" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-black/90 p-6 sm:p-10 rounded-2xl sm:rounded-3xl max-w-sm sm:max-w-md w-full border border-pink-500/30 shadow-[0_0_30px_rgba(236,72,153,0.3)]" onClick={(e) => e.stopPropagation()}>
             <div className="text-center">
               <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-pink-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-[0_0_25px_rgba(236,72,153,0.5)]">
                 <svg className="w-8 h-8 sm:w-10 sm:h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -598,7 +597,7 @@ const Form = ({ onClose }) => {
       {/* Requirement Modal */}
       {showRequirementModal && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/80 backdrop-blur-md" onClick={() => setShowRequirementModal(false)}>
-          <div className="bg-black/90 p-6 sm:p-10 rounded-2xl sm:rounded-3xl w-[calc(100%-16px)] sm:max-w-md mx-2 border border-pink-500/30 shadow-[0_0_30px_rgba(236,72,153,0.3)]" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-black/90 p-6 sm:p-10 rounded-2xl sm:rounded-3xl max-w-sm sm:max-w-md w-full border border-pink-500/30 shadow-[0_0_30px_rgba(236,72,153,0.3)]" onClick={(e) => e.stopPropagation()}>
             <div className="text-center">
               <div className="w-16 h-16 sm:w-20 sm:h-20 bg-pink-500/30 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
                 <svg className="w-8 h-8 sm:w-10 sm:h-10 text-pink-400" fill="currentColor" viewBox="0 0 20 20">
