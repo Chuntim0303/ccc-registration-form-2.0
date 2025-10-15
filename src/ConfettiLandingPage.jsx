@@ -241,13 +241,13 @@ const ConfettiLandingPage = ({ onShowForm }) => {
         </div>
       </section>
 
-    
-          {/* Benefits Section */}
+{/* Benefits Section */}
       <section className="py-12 md:py-20 px-4 relative z-10 bg-gradient-to-b from-transparent via-purple-900/10 to-transparent">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-8 md:mb-12 text-center bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">你将收获什么？</h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 px-4">
+          {/* REVISED: Use flexbox for centering and wrapping */}
+          <div className="flex flex-wrap justify-center gap-4 md:gap-6 px-4">
             {[
               "⚡ 结识 500+ 企业家 & 行业领袖",
               "⚡ 进入真实高效的资源对接环境",
@@ -255,7 +255,13 @@ const ConfettiLandingPage = ({ onShowForm }) => {
               "⚡ 见证合作战略签署",
               "⚡ 长期进入商业合作生态圈"
             ].map((benefit, idx) => (
-              <div key={idx} className="bg-black/60 backdrop-blur-md rounded-xl p-4 md:p-6 text-center border border-pink-500/30 shadow-[0_0_20px_rgba(236,72,153,0.2)]">
+              <div 
+                key={idx} 
+                // Set max width for the box so it doesn't span the full container
+                // On small screens, it takes full width (w-full), then max-w-sm on larger screens.
+                // This ensures it wraps nicely and is centered.
+                className="w-full sm:max-w-sm md:max-w-md lg:max-w-xs bg-black/60 backdrop-blur-md rounded-xl p-4 md:p-6 text-center border border-pink-500/30 shadow-[0_0_20px_rgba(236,72,153,0.2)]"
+              >
                 <h3 className="text-base md:text-xl font-semibold text-gray-200">{benefit}</h3>
               </div>
             ))}
@@ -490,16 +496,16 @@ const ConfettiLandingPage = ({ onShowForm }) => {
       <div className="lg:w-1/2 w-full">
         <div className="bg-black/40 backdrop-blur-sm rounded-xl overflow-hidden border border-purple-500/30 shadow-[0_0_20px_rgba(168,85,247,0.3)]">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3984.267962634945!2d101.69372227579812!3d3.021587653246945!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31cc4a6c65f33c2f%3A0x7c1c1a5b16c5d0b8!2sMines%202%2C%20Mines%20Wellness%20City%2C%2043300%20Seri%20Kembangan%2C%20Selangor!5e0!3m2!1sen!2smy!4v1698765432100!5m2!1sen!2smy"
-            width="100%"
-            height="400"
-            style={{ border: 0, borderRadius: '12px' }}
-            allowFullScreen=""
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            title="Confetti KL Location"
-            className="w-full"
-          ></iframe>
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3984.237868669636!2d101.7081257!3d3.0271893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31cdcb5ee33ac55f%3A0x5d377ad570dbc5fd!2sConfetti%20KL!5e0!3m2!1sen!2smy!4v1698765432100!5m2!1sen!2smy"
+      width="100%"
+      height="400"
+      style={{ border: 0, borderRadius: '12px' }}
+      allowFullScreen=""
+      loading="lazy"
+      referrerPolicy="no-referrer-when-downgrade"
+      title="Confetti KL Location"
+      className="w-full"
+    ></iframe>
         </div>
         <p className="text-xs text-gray-400 mt-2 text-center lg:text-left">
           📍 Confetti KL - Ground floor Retail Block, Pusat Perdagangan Mines 2
