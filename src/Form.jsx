@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import industries from './components/industryOptions'; // Import the options
-import countryCodes from './components/countryCodes'; // Import the country codes
+import { X } from 'lucide-react';
+import industries from './components/industryOptions';
+import countryCodes from './components/countryCodes';
 
-const Form = ({ onBack, onClose }) => {
+const Form = ({ onClose }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [isValidPromoCode, setIsValidPromoCode] = useState(false);
   const [promoMessage, setPromoMessage] = useState('');
@@ -20,7 +21,7 @@ const Form = ({ onBack, onClose }) => {
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
-    countryCode: '60', // Default to Malaysia
+    countryCode: '60',
     phoneNumber: '',
     position: '',
     industry: '',
@@ -28,21 +29,12 @@ const Form = ({ onBack, onClose }) => {
     receipt: null
   });
 
-  // Get API endpoint from environment variable or use default
   const API_ENDPOINT = import.meta.env.VITE_API_BASE_URL ||
     'https://2ko8yhgag2.execute-api.ap-southeast-1.amazonaws.com/dev/register';
-
-  // API endpoint for promo code validation
   const PROMO_CODE_CHECK_ENDPOINT = import.meta.env.VITE_PROMO_CODE_CHECK_URL ||
     'https://2ko8yhgag2.execute-api.ap-southeast-1.amazonaws.com/dev/check-promo-code';
 
-  // Capture UTM parameters on component mount
   useEffect(() => {
-    console.log('API Base URL:', import.meta.env.VITE_API_BASE_URL);
-    console.log('Environment variables:', import.meta.env);
-    console.log('Registration API Endpoint:', API_ENDPOINT);
-    console.log('Promo Code Check API Endpoint:', PROMO_CODE_CHECK_ENDPOINT);
-
     const urlParams = new URLSearchParams(window.location.search);
     const utmData = {
       utm_source: urlParams.get('utm_source') || '',
@@ -50,8 +42,6 @@ const Form = ({ onBack, onClose }) => {
       utm_campaign: urlParams.get('utm_campaign') || ''
     };
     setUtmParams(utmData);
-
-    // Store in sessionStorage for persistence
     sessionStorage.setItem('utm_params', JSON.stringify(utmData));
   }, []);
 
@@ -60,33 +50,24 @@ const Form = ({ onBack, onClose }) => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-
     if (name === 'specialcode') {
       checkPromoCode(value);
     }
-
-    // Clear error message when user starts typing
-    if (errorMessage) {
-      setErrorMessage('');
-    }
+    setErrorMessage('');
   };
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      // Validate file size (max 5MB)
       if (file.size > 5 * 1024 * 1024) {
         setErrorMessage('File size must be less than 5MB');
         return;
       }
-
-      // Validate file type
       const validTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
       if (!validTypes.includes(file.type)) {
         setErrorMessage('Please upload a PDF, JPG, or PNG file');
         return;
       }
-
       setFormData(prev => ({ ...prev, receipt: file }));
       setFileName(file.name);
       setErrorMessage('');
@@ -99,19 +80,15 @@ const Form = ({ onBack, onClose }) => {
       setIsValidPromoCode(false);
       return;
     }
-
-    // Call backend to validate promo code
     await checkPromoCodeOnBackend(code);
   };
 
   const checkPromoCodeOnBackend = async (code) => {
     setPromoMessage('Checking promo code...');
     setIsValidPromoCode(false);
-
     try {
       const storedUtmParams = sessionStorage.getItem('utm_params');
       const finalUtmParams = storedUtmParams ? JSON.parse(storedUtmParams) : utmParams;
-
       const response = await fetch(PROMO_CODE_CHECK_ENDPOINT, {
         method: 'POST',
         headers: {
@@ -122,9 +99,7 @@ const Form = ({ onBack, onClose }) => {
           utm_campaign: finalUtmParams.utm_campaign || 'CIRCLE_CONFETTI_2025'
         }),
       });
-
       const responseData = await response.json();
-
       if (response.ok && responseData.isValid) {
         setPromoMessage('Valid code! Registration is free.');
         setIsValidPromoCode(true);
@@ -198,7 +173,6 @@ const Form = ({ onBack, onClose }) => {
       setErrorMessage('');
       if (currentStep < totalSteps) {
         setCurrentStep(currentStep + 1);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
         handleSubmit();
       }
@@ -209,7 +183,6 @@ const Form = ({ onBack, onClose }) => {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
       setErrorMessage('');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
@@ -225,11 +198,9 @@ const Form = ({ onBack, onClose }) => {
   const handleSubmit = async () => {
     setIsSubmitting(true);
     setErrorMessage('');
-
     try {
       const storedUtmParams = sessionStorage.getItem('utm_params');
       const finalUtmParams = storedUtmParams ? JSON.parse(storedUtmParams) : utmParams;
-
       const submitData = {
         fullName: formData.fullName.trim(),
         email: formData.email.toLowerCase().trim(),
@@ -237,27 +208,16 @@ const Form = ({ onBack, onClose }) => {
         position: formData.position.trim(),
         industry: formData.industry,
         promoCode: formData.specialcode.toUpperCase().trim(),
-        isPromoCodeUsed: isValidPromoCode, // Add isPromoCodeUsed to match backend expectation
+        isPromoCodeUsed: isValidPromoCode,
         utm_source: finalUtmParams.utm_source,
         utm_medium: finalUtmParams.utm_medium,
         utm_campaign: finalUtmParams.utm_campaign
       };
-
-      // Handle receipt upload if no valid promo code is used
       if (!isValidPromoCode && formData.receipt) {
-        try {
-          const base64Data = await fileToBase64(formData.receipt);
-          submitData.receiptBase64 = base64Data.split(',')[1];
-          submitData.receiptFilename = formData.receipt.name;
-        } catch (error) {
-          console.error('File processing error:', error);
-          setErrorMessage('Error processing receipt. Please try again.');
-          setIsSubmitting(false);
-          return;
-        }
+        const base64Data = await fileToBase64(formData.receipt);
+        submitData.receiptBase64 = base64Data.split(',')[1];
+        submitData.receiptFilename = formData.receipt.name;
       }
-
-      // Submit to API
       const response = await fetch(API_ENDPOINT, {
         method: 'POST',
         headers: {
@@ -265,9 +225,7 @@ const Form = ({ onBack, onClose }) => {
         },
         body: JSON.stringify(submitData)
       });
-
       const responseData = await response.json();
-
       if (!response.ok) {
         if (response.status === 400) {
           if (responseData.error === 'Invalid JSON') {
@@ -289,12 +247,7 @@ const Form = ({ onBack, onClose }) => {
         }
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-
-      // Success
-      console.log('Registration successful:', responseData);
       setShowSuccessModal(true);
-
-      // Reset form
       setFormData({
         fullName: '',
         email: '',
@@ -309,7 +262,6 @@ const Form = ({ onBack, onClose }) => {
       setIsValidPromoCode(false);
       setPromoMessage('');
       setFileName('');
-
     } catch (error) {
       console.error('Registration error:', error);
       if (!errorMessage) {
@@ -323,123 +275,121 @@ const Form = ({ onBack, onClose }) => {
   const handleSuccessClose = () => {
     setShowSuccessModal(false);
     if (onClose) onClose();
-    if (onBack) onBack();
   };
 
   const progress = (currentStep / totalSteps) * 100;
 
   return (
-    <div className="min-h-screen bg-[#0f0f23] text-white">
-      <div className="max-w-lg mx-auto px-6 py-6">
-        {/* Header */}
-        <div className="text-center mb-6">
+    <div className="relative bg-black/90 backdrop-blur-lg text-white rounded-3xl shadow-2xl border border-pink-500/30 max-w-2xl mx-auto my-12 p-10">
+      {/* Close Button */}
+      <button
+        onClick={onClose}
+        className="absolute top-6 right-6 text-purple-200 hover:text-pink-400 transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500 rounded-full p-1"
+        aria-label="Close form"
+      >
+        <X size={28} />
+      </button>
+
+      {/* Header */}
+      <div className="text-center mb-10">
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Event Registration</h1>
+        <p className="text-lg text-purple-200 mt-3">Join Confetti Circle Club 3.0</p>
+      </div>
+
+      {/* Error Message */}
+      {errorMessage && (
+        <div className="bg-pink-900/30 border border-pink-500/50 rounded-xl p-5 mb-8 flex items-center gap-4 shadow-[0_0_15px_rgba(236,72,153,0.2)]">
+          <svg className="w-6 h-6 text-pink-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+          </svg>
+          <p className="text-pink-200 text-base flex-1">{errorMessage}</p>
           <button
-            onClick={onBack || onClose}
-            className="mb-4 text-purple-400 hover:text-purple-300 flex items-center gap-2 transition-colors"
+            onClick={() => setErrorMessage('')}
+            className="text-pink-300 hover:text-pink-400 focus:outline-none focus:ring-2 focus:ring-pink-500 rounded-full p-1"
+            aria-label="Dismiss error"
           >
-            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
-            </svg>
-            Back to Home
+            <X size={20} />
           </button>
-          <h1 className="text-2xl font-bold mb-1">Event Registration</h1>
-          <p className="text-gray-400 text-sm">Circle Confetti Club Exclusive Event</p>
         </div>
+      )}
 
-        {/* Error Message */}
-        {errorMessage && (
-          <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 mb-6 flex items-start gap-3">
-            <svg className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-            </svg>
-            <div className="flex-1">
-              <p className="text-red-400 text-sm font-medium">{errorMessage}</p>
+      {/* Progress Bar */}
+      <div className="bg-black/60 h-3 rounded-full overflow-hidden mb-10 border border-purple-500/30">
+        <div
+          className="h-full bg-gradient-to-r from-pink-500 to-purple-500 transition-all duration-500"
+          style={{ width: `${progress}%` }}
+        />
+      </div>
+
+      {/* Step Indicator */}
+      <div className="flex justify-center gap-12 mb-10">
+        {['Personal', 'Professional', 'Payment'].map((label, index) => (
+          <div key={index} className="flex flex-col items-center">
+            <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold transition-all ${
+              index + 1 < currentStep ? 'bg-gradient-to-br from-pink-500 to-purple-500 text-white shadow-[0_0_20px_rgba(236,72,153,0.5)]' :
+              index + 1 === currentStep ? 'bg-gradient-to-br from-pink-400 to-purple-400 text-white scale-110 shadow-[0_0_25px_rgba(236,72,153,0.6)]' :
+              'bg-black/60 border-2 border-purple-500/30 text-purple-200'
+            }`}>
+              {index + 1 < currentStep ? '✓' : index + 1}
             </div>
-            <button
-              onClick={() => setErrorMessage('')}
-              className="text-red-400 hover:text-red-300"
-            >
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-              </svg>
-            </button>
+            <p className="text-sm mt-3 text-purple-200 font-medium">{label}</p>
           </div>
-        )}
+        ))}
+      </div>
 
-        {/* Progress Bar */}
-        <div className="bg-[#1a1a2e] h-1.5 rounded-full overflow-hidden mb-8">
-          <div
-            className="h-full bg-gradient-to-r from-purple-500 to-purple-400 transition-all duration-400"
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-
-        {/* Step Indicator */}
-        <div className="flex justify-between items-center mb-10 px-2">
-          {[1, 2, 3].map((step, idx) => (
-            <React.Fragment key={step}>
-              <div className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-semibold transition-all ${
-                step < currentStep ? 'bg-gradient-to-br from-green-500 to-green-600 text-white' :
-                step === currentStep ? 'bg-gradient-to-br from-purple-500 to-purple-400 text-white scale-110 shadow-lg shadow-purple-500/30' :
-                'bg-[#1a1a2e] border-2 border-[#2d2d44] text-gray-500'
-              }`}>
-                {step < currentStep ? '✓' : step}
-              </div>
-              {idx < 2 && (
-                <div className="flex-1 h-0.5 mx-2 bg-[#2d2d44] relative">
-                  {step < currentStep && <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-green-600" />}
-                </div>
-              )}
-            </React.Fragment>
-          ))}
-        </div>
-
-        {/* Step 1: Personal Information */}
+      {/* Form Steps */}
+      <div className="space-y-6">
         {currentStep === 1 && (
-          <div className="bg-[#16213e] rounded-2xl p-8 border border-[#2d2d44] mb-6">
-            <h2 className="text-lg font-semibold text-purple-300 mb-6">Personal Information</h2>
-
-            <div className="space-y-5">
+          <>
+            <h2 className="text-2xl font-semibold text-center bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Personal Information</h2>
+            <div className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-gray-200 mb-2">
-                  Full Name <span className="text-red-500">*</span>
-                  <span className="block text-xs text-gray-500 mt-1">As per IC/Passport</span>
+                <label className="block text-base font-medium text-purple-100 mb-2" htmlFor="fullName">
+                  Full Name <span className="text-pink-400">*</span>
+                  <span className="block text-sm text-purple-200/70 mt-1">As per IC/Passport</span>
                 </label>
                 <input
+                  id="fullName"
                   type="text"
                   name="fullName"
                   value={formData.fullName}
                   onChange={handleInputChange}
                   placeholder="Enter your full name"
-                  className="w-full px-4 py-3 bg-[#0f0f23] border-2 border-[#2d2d44] rounded-lg text-white focus:outline-none focus:border-purple-500 transition-colors"
+                  className="w-full px-5 py-3 bg-black/50 border border-purple-500/40 rounded-xl text-white text-base focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all placeholder-purple-200/50"
                   required
+                  aria-required="true"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-200 mb-2">
-                  Email Address <span className="text-red-500">*</span>
-                  <span className="block text-xs text-gray-500 mt-1">Your ticket will be sent here</span>
+                <label className="block text-base font-medium text-purple-100 mb-2" htmlFor="email">
+                  Email Address <span className="text-pink-400">*</span>
+                  <span className="block text-sm text-purple-200/70 mt-1">Your ticket will be sent here</span>
                 </label>
                 <input
+                  id="email"
                   type="email"
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
                   placeholder="your.email@example.com"
-                  className="w-full px-4 py-3 bg-[#0f0f23] border-2 border-[#2d2d44] rounded-lg text-white focus:outline-none focus:border-purple-500 transition-colors"
+                  className="w-full px-5 py-3 bg-black/50 border border-purple-500/40 rounded-xl text-white text-base focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all placeholder-purple-200/50"
                   required
+                  aria-required="true"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-200 mb-2">Phone Number <span className="text-red-500">*</span></label>
-                <div className="grid grid-cols-[120px_1fr] gap-3">
+                <label className="block text-base font-medium text-purple-100 mb-2" htmlFor="phoneNumber">
+                  Phone Number <span className="text-pink-400">*</span>
+                </label>
+                <div className="flex gap-3">
                   <select
                     name="countryCode"
                     value={formData.countryCode}
                     onChange={handleInputChange}
-                    className="px-4 py-3 bg-[#0f0f23] border-2 border-[#2d2d44] rounded-lg text-white focus:outline-none focus:border-purple-500 cursor-pointer"
+                    className="w-32 px-5 py-3 bg-black/50 border border-purple-500/40 rounded-xl text-white text-base focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all cursor-pointer"
+                    aria-label="Country code"
                   >
                     {countryCodes.map((country, index) => (
                       <option key={index} value={country.code}>
@@ -448,49 +398,57 @@ const Form = ({ onBack, onClose }) => {
                     ))}
                   </select>
                   <input
+                    id="phoneNumber"
                     type="tel"
                     name="phoneNumber"
                     value={formData.phoneNumber}
                     onChange={handleInputChange}
                     placeholder="123456789"
-                    className="px-4 py-3 bg-[#0f0f23] border-2 border-[#2d2d44] rounded-lg text-white focus:outline-none focus:border-purple-500 transition-colors"
+                    className="flex-1 px-5 py-3 bg-black/50 border border-purple-500/40 rounded-xl text-white text-base focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all placeholder-purple-200/50"
                     required
+                    aria-required="true"
                   />
                 </div>
               </div>
             </div>
-          </div>
+          </>
         )}
 
-        {/* Step 2: Professional Information */}
         {currentStep === 2 && (
-          <div className="bg-[#16213e] rounded-2xl p-8 border border-[#2d2d44] mb-6">
-            <h2 className="text-lg font-semibold text-purple-300 mb-6">Professional Information</h2>
-
-            <div className="space-y-5">
+          <>
+            <h2 className="text-2xl font-semibold text-center bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Professional Information</h2>
+            <div className="space-y-8">
               <div>
-                <label className="block text-sm font-medium text-gray-200 mb-2">Position <span className="text-red-500">*</span></label>
+                <label className="block text-base font-medium text-purple-100 mb-3" htmlFor="position">
+                  Position <span className="text-pink-400">*</span>
+                </label>
                 <input
+                  id="position"
                   type="text"
                   name="position"
                   value={formData.position}
                   onChange={handleInputChange}
                   placeholder="Your job title"
-                  className="w-full px-4 py-3 bg-[#0f0f23] border-2 border-[#2d2d44] rounded-lg text-white focus:outline-none focus:border-purple-500 transition-colors"
+                  className="w-full px-5 py-4 bg-black/50 border border-purple-500/40 rounded-xl text-white text-base focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all placeholder-purple-200/50"
                   required
+                  aria-required="true"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-200 mb-2">Industry <span className="text-red-500">*</span></label>
+                <label className="block text-base font-medium text-purple-100 mb-3" htmlFor="industry">
+                  Industry <span className="text-pink-400">*</span>
+                </label>
                 <select
+                  id="industry"
                   name="industry"
                   value={formData.industry}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 bg-[#0f0f23] border-2 border-[#2d2d44] rounded-lg text-white focus:outline-none focus:border-purple-500 cursor-pointer"
+                  className="w-full px-5 py-4 bg-black/50 border border-purple-500/40 rounded-xl text-white text-base focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all cursor-pointer"
                   required
+                  aria-required="true"
                 >
-                  <option value="">Choose your industry</option>
+                  <option value="">Select your industry</option>
                   {industries.map((industry, index) => (
                     <option key={index} value={industry}>
                       {industry}
@@ -499,224 +457,162 @@ const Form = ({ onBack, onClose }) => {
                 </select>
               </div>
             </div>
-          </div>
+          </>
         )}
 
-        {/* Step 3: Combined Event Information & Payment */}
         {currentStep === 3 && (
-          <div>
-            <h2 className="text-lg font-semibold text-purple-300 mb-6 text-center">Complete Registration</h2>
+          <>
+            <h2 className="text-2xl font-semibold text-center bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Complete Registration</h2>
 
             {/* Promo Code Section */}
-            <div className="bg-[#16213e] rounded-2xl p-6 border border-[#2d2d44] mb-6">
-              <h3 className="text-base font-semibold text-white mb-4">Special Code</h3>
-              <div className="space-y-3">
-                <input
-                  type="text"
-                  name="specialcode"
-                  value={formData.specialcode}
-                  onChange={handleInputChange}
-                  placeholder="Enter promo code (optional)"
-                  className="w-full px-4 py-3 bg-[#0f0f23] border-2 border-[#2d2d44] rounded-lg text-white focus:outline-none focus:border-purple-500 transition-colors"
-                />
-                {promoMessage && (
-                  <div className={`px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-2 ${
-                    isValidPromoCode ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 'bg-red-500/10 text-red-400 border border-red-500/20'
-                  }`}>
-                    {isValidPromoCode ? (
-                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                    ) : (
-                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                      </svg>
-                    )}
-                    {promoMessage}
-                  </div>
-                )}
-              </div>
-
-              {/* Success message for valid promo code */}
+            <div className="bg-black/60 rounded-2xl p-6 border border-purple-500/40 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
+              <h3 className="text-lg font-semibold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent mb-4">Promo Code (Optional)</h3>
+              <input
+                type="text"
+                name="specialcode"
+                value={formData.specialcode}
+                onChange={handleInputChange}
+                placeholder="Enter promo code"
+                className="w-full px-5 py-3 bg-black/70 border border-purple-500/40 rounded-xl text-white text-base focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all placeholder-purple-200/50"
+              />
+              {promoMessage && (
+                <div className={`mt-4 p-4 rounded-xl text-base flex items-center gap-3 ${
+                  isValidPromoCode ? 'bg-green-900/30 text-green-200 border border-green-500/40' : 'bg-pink-900/30 text-pink-200 border border-pink-500/40'
+                }`}>
+                  {isValidPromoCode ? (
+                    <svg className="w-6 h-6 text-green-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                  ) : (
+                    <svg className="w-6 h-6 text-pink-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                    </svg>
+                  )}
+                  {promoMessage}
+                </div>
+              )}
               {isValidPromoCode && (
-                <div className="mt-4 bg-gradient-to-r from-green-500 to-green-600 p-4 rounded-xl text-center text-white font-medium flex items-center justify-center gap-2">
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  <span>🎉 Your promo code is valid - Registration is FREE! No receipt required.</span>
+                <div className="mt-4 p-4 bg-gradient-to-r from-pink-500/30 to-purple-500/30 rounded-xl text-center text-purple-100 text-base font-medium">
+                  🎉 Registration is FREE with this code!
                 </div>
               )}
             </div>
 
-            {/* Payment Section - Only show if no valid promo code */}
+            {/* Payment Section */}
             {!isValidPromoCode && (
-              <div className="bg-[#1a1a2e] p-6 rounded-xl border border-[#2d2d44] mb-6">
-                <h3 className="text-base font-medium text-white mb-3 text-center">Payment Instructions</h3>
-                <p className="text-gray-400 text-sm mb-4 text-center">Transfer RM159 to the account below</p>
-
-                <div className="max-w-[240px] mx-auto mb-4">
-                  <div className="bg-gray-700 rounded-lg aspect-square flex items-center justify-center p-4">
+              <div className="bg-black/60 rounded-2xl p-6 border border-purple-500/40 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
+                <h3 className="text-lg font-semibold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent mb-4 text-center">Payment Information</h3>
+                <p className="text-purple-200 text-base mb-6 text-center">Scan to pay RM159 (incl. 6% SST) and upload your receipt.</p>
+                <div className="flex justify-center mb-6">
+                  <div className="bg-white/90 p-4 rounded-xl border border-pink-500/50 shadow-[0_0_20px_rgba(236,72,153,0.3)]">
                     <img
                       src="/qr_code.jpg"
-                      alt="QR Code"
-                      className="w-full h-full object-contain rounded-lg"
+                      alt="Payment QR Code"
+                      className="w-80 h-80 object-contain"
                     />
                   </div>
                 </div>
-
-                <div className="mt-5">
-                  <label className="block text-sm font-medium text-gray-200 mb-2">
-                    Upload Payment Receipt <span className="text-red-500">*</span>
-                    <span className="block text-xs text-gray-500 mt-1">Upload your transfer receipt (PDF/JPG/PNG, max 5MB)</span>
+                <div>
+                  <label className="block text-base font-medium text-purple-100 mb-2">
+                    Upload Receipt <span className="text-pink-400">*</span>
+                    <span className="block text-sm text-purple-200/70 mt-1">PDF, JPG, or PNG (max 5MB)</span>
                   </label>
-                  <div className={`relative border-2 border-dashed rounded-lg p-4 hover:border-purple-500 transition-colors cursor-pointer bg-[#0f0f23] ${
-                    fileName ? 'border-green-500 border-solid' : 'border-[#2d2d44]'
+                  <div className={`relative border-2 border-dashed rounded-xl p-6 transition-all cursor-pointer ${
+                    fileName ? 'border-pink-500 border-solid bg-pink-500/20' : 'border-purple-500/40 hover:border-pink-500'
                   }`}>
                     <input
                       type="file"
                       accept=".pdf,.jpg,.jpeg,.png"
                       onChange={handleFileChange}
                       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                      aria-label="Upload receipt"
                     />
-                    <div className={`text-center text-sm flex items-center justify-center gap-2 ${
-                      fileName ? 'text-green-400' : 'text-gray-400'
-                    }`}>
-                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a5 5 0 0110 0v4a3 3 0 11-6 0V7a1 1 0 012 0v4a1 1 0 102 0V7a3 3 0 00-3-3z" clipRule="evenodd" />
-                      </svg>
-                      <span>{fileName || 'Choose file or drag here'}</span>
+                    <div className="text-center text-base text-purple-200">
+                      {fileName ? `✓ ${fileName}` : 'Drag & drop or click to upload'}
                     </div>
                   </div>
                 </div>
               </div>
             )}
-
-            <div className="text-center text-gray-400 text-sm">
-              Need help? Contact Amy at <strong className="text-white">017-661 7262</strong>
-            </div>
-          </div>
+          </>
         )}
+      </div>
 
-        {/* Navigation Buttons */}
-        <div className="flex justify-between gap-3 mt-8 pt-6 border-t border-[#2d2d44]">
+      {/* Navigation Buttons */}
+      <div className="sticky bottom-0 bg-black/90 pt-6 mt-8 border-t border-purple-500/30">
+        <div className="flex justify-between">
           {currentStep > 1 && (
             <button 
               onClick={prevStep} 
               disabled={isSubmitting}
-              className="px-6 py-3 bg-[#1a1a2e] border-2 border-[#2d2d44] rounded-lg text-gray-400 hover:text-white hover:bg-[#2d2d44] transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-8 py-3 bg-black/60 border border-purple-500/40 rounded-xl text-purple-200 text-base font-medium hover:bg-purple-500/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-purple-500"
             >
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
-              </svg>
               Previous
             </button>
           )}
           <button
             onClick={nextStep}
             disabled={isSubmitting}
-            className={`ml-auto px-6 py-3 rounded-lg font-semibold flex items-center gap-2 transition-all ${
-              currentStep === totalSteps
-                ? 'bg-gradient-to-r from-green-500 to-green-600 text-white hover:shadow-lg hover:shadow-green-500/50'
-                : 'bg-gradient-to-r from-purple-500 to-purple-400 text-white hover:shadow-lg hover:shadow-purple-500/50'
-            } disabled:opacity-50 disabled:cursor-not-allowed`}
+            className={`ml-auto px-8 py-3 rounded-xl text-base font-bold text-white transition-all shadow-[0_0_20px_rgba(236,72,153,0.4)] ${
+              isSubmitting ? 'bg-purple-500/50 cursor-not-allowed' :
+              'bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-pink-500'
+            }`}
           >
             {isSubmitting ? (
               <>
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                <span>Submitting...</span>
-              </>
-            ) : currentStep === totalSteps ? (
-              <>
-                <span>Submit</span>
-              </>
-            ) : (
-              <>
-                <span>Next</span>
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                <svg className="inline-block w-5 h-5 mr-2 animate-spin" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
+                Submitting...
               </>
-            )}
+            ) : currentStep === totalSteps ? 'Submit' : 'Next'}
           </button>
         </div>
       </div>
 
       {/* Success Modal */}
       {showSuccessModal && (
-        <div 
-          className="fixed inset-0 bg-black/85 backdrop-blur-sm flex items-center justify-center p-5 z-50" 
-          onClick={handleSuccessClose}
-        >
-          <div 
-            className="bg-[#16213e] p-8 rounded-2xl max-w-md w-full border border-[#2d2d44] animate-[modalSlideIn_0.3s_ease]" 
-            onClick={e => e.stopPropagation()}
-          >
-            <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-              </svg>
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/80 backdrop-blur-md" onClick={handleSuccessClose}>
+          <div className="bg-black/90 p-10 rounded-3xl max-w-md w-full border border-pink-500/30 shadow-[0_0_30px_rgba(236,72,153,0.3)]" onClick={(e) => e.stopPropagation()}>
+            <div className="text-center">
+              <div className="w-20 h-20 bg-gradient-to-br from-pink-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-[0_0_25px_rgba(236,72,153,0.5)]">
+                <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <h3 className="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent mb-4">Registration Successful!</h3>
+              <p className="text-base text-purple-200 mb-8">Check your email for your QR code ticket. Contact Amy at <a href="tel:+60176617262" className="text-pink-400 hover:underline">017-661 7262</a> for assistance.</p>
+              <button 
+                onClick={handleSuccessClose} 
+                className="w-full py-4 bg-gradient-to-r from-pink-500 to-purple-500 rounded-xl text-white text-base font-bold hover:from-pink-600 hover:to-purple-600 transition-all focus:outline-none focus:ring-2 focus:ring-pink-500"
+              >
+                Close
+              </button>
             </div>
-            <h3 className="text-xl font-bold text-center mb-2">Registration Successful!</h3>
-            <p className="text-gray-400 text-sm text-center mb-6">
-              Thank you for registering! Check your email for your QR code ticket. 
-              Contact Amy at 017-661 7262 if you need assistance.
-            </p>
-            <button 
-              onClick={handleSuccessClose} 
-              className="w-full px-6 py-3 bg-gradient-to-r from-purple-500 to-purple-400 rounded-lg text-white font-semibold hover:shadow-lg transition-all"
-            >
-              Close
-            </button>
           </div>
         </div>
       )}
 
       {/* Requirement Modal */}
-      {showRequirementModal && (
-        <div 
-          className="fixed inset-0 bg-black/85 backdrop-blur-sm flex items-center justify-center p-5 z-50" 
-          onClick={() => setShowRequirementModal(false)}
-        >
-          <div 
-            className="bg-[#16213e] p-8 rounded-2xl max-w-md w-full border-2 border-red-500 shadow-[0_0_30px_rgba(239,68,68,0.2)] animate-[modalSlideIn_0.3s_ease]" 
-            onClick={e => e.stopPropagation()}
-          >
-            <div className="w-14 h-14 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-              </svg>
-            </div>
-            <h3 className="text-xl font-bold text-center mb-2">Payment Required</h3>
-            <p className="text-gray-400 text-sm text-center mb-4">Please complete one of the following:</p>
-            
-            <div className="space-y-3 mb-6">
-              <div className="flex items-start gap-3 p-3 bg-white/5 rounded-lg">
-                <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <span className="text-white text-xs font-bold">1</span>
-                </div>
-                <div>
-                  <div className="text-white font-medium text-sm">Upload Payment Receipt</div>
-                  <div className="text-gray-400 text-xs mt-1">Transfer RM159 and upload your receipt</div>
-                </div>
+      {showSuccessModal && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/80 backdrop-blur-md" onClick={() => setShowRequirementModal(false)}>
+          <div className="bg-black/90 p-10 rounded-3xl max-w-md w-full border border-pink-500/30 shadow-[0_0_30px_rgba(236,72,153,0.3)]" onClick={(e) => e.stopPropagation()}>
+            <div className="text-center">
+              <div className="w-20 h-20 bg-pink-500/30 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg className="w-10 h-10 text-pink-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                </svg>
               </div>
-              
-              <div className="flex items-start gap-3 p-3 bg-white/5 rounded-lg">
-                <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <span className="text-white text-xs font-bold">2</span>
-                </div>
-                <div>
-                  <div className="text-white font-medium text-sm">Enter Valid Promo Code</div>
-                  <div className="text-gray-400 text-xs mt-1">Use a promo code for free registration</div>
-                </div>
-              </div>
+              <h3 className="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent mb-4">Action Required</h3>
+              <p className="text-base text-purple-200 mb-8">Please upload a payment receipt or enter a valid promo code to complete your registration.</p>
+              <button 
+                onClick={() => setShowRequirementModal(false)} 
+                className="w-full py-4 bg-gradient-to-r from-pink-500 to-purple-500 rounded-xl text-white text-base font-bold hover:from-pink-600 hover:to-purple-600 transition-all focus:outline-none focus:ring-2 focus:ring-pink-500"
+              >
+                Got It
+              </button>
             </div>
-            
-            <button 
-              onClick={() => setShowRequirementModal(false)} 
-              className="w-full px-6 py-3 bg-gradient-to-r from-purple-500 to-purple-400 rounded-lg text-white font-semibold hover:shadow-lg transition-all"
-            >
-              Got It
-            </button>
           </div>
         </div>
       )}
