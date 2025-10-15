@@ -280,41 +280,41 @@ const Form = ({ onClose }) => {
   const progress = (currentStep / totalSteps) * 100;
 
   return (
-    <div className="relative bg-black/90 backdrop-blur-lg text-white rounded-3xl shadow-2xl border border-pink-500/30 max-w-2xl mx-auto my-12 p-10">
+    <div className="relative bg-black/90 backdrop-blur-lg text-white rounded-2xl sm:rounded-3xl shadow-2xl border border-pink-500/30 max-w-md sm:max-w-2xl mx-auto my-4 sm:my-12 p-4 sm:p-10">
       {/* Close Button */}
       <button
         onClick={onClose}
-        className="absolute top-6 right-6 text-purple-200 hover:text-pink-400 transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500 rounded-full p-1"
+        className="absolute top-2 sm:top-6 right-2 sm:right-6 text-purple-200 hover:text-pink-400 transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500 rounded-full p-1"
         aria-label="Close form"
       >
-        <X size={28} />
+        <X size={20} className="sm:w-7 sm:h-7" />
       </button>
 
       {/* Header */}
-      <div className="text-center mb-10">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Event Registration</h1>
-        <p className="text-lg text-purple-200 mt-3">Join Confetti Circle Club 3.0</p>
+      <div className="text-center mb-6 sm:mb-10">
+        <h1 className="text-2xl sm:text-4xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Event Registration</h1>
+        <p className="text-sm sm:text-lg text-purple-200 mt-2 sm:mt-3">Join Confetti Circle Club 3.0</p>
       </div>
 
       {/* Error Message */}
       {errorMessage && (
-        <div className="bg-pink-900/30 border border-pink-500/50 rounded-xl p-5 mb-8 flex items-center gap-4 shadow-[0_0_15px_rgba(236,72,153,0.2)]">
-          <svg className="w-6 h-6 text-pink-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+        <div className="bg-pink-900/30 border border-pink-500/50 rounded-xl p-4 sm:p-5 mb-6 sm:mb-8 flex items-center gap-3 sm:gap-4 shadow-[0_0_15px_rgba(236,72,153,0.2)]">
+          <svg className="w-5 h-5 sm:w-6 sm:h-6 text-pink-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
           </svg>
-          <p className="text-pink-200 text-base flex-1">{errorMessage}</p>
+          <p className="text-pink-200 text-sm sm:text-base flex-1">{errorMessage}</p>
           <button
             onClick={() => setErrorMessage('')}
             className="text-pink-300 hover:text-pink-400 focus:outline-none focus:ring-2 focus:ring-pink-500 rounded-full p-1"
             aria-label="Dismiss error"
           >
-            <X size={20} />
+            <X size={16} className="sm:w-5 sm:h-5" />
           </button>
         </div>
       )}
 
       {/* Progress Bar */}
-      <div className="bg-black/60 h-3 rounded-full overflow-hidden mb-10 border border-purple-500/30">
+      <div className="bg-black/60 h-2 sm:h-3 rounded-full overflow-hidden mb-6 sm:mb-10 border border-purple-500/30">
         <div
           className="h-full bg-gradient-to-r from-pink-500 to-purple-500 transition-all duration-500"
           style={{ width: `${progress}%` }}
@@ -322,31 +322,31 @@ const Form = ({ onClose }) => {
       </div>
 
       {/* Step Indicator */}
-      <div className="flex justify-center gap-12 mb-10">
+      <div className="flex justify-center gap-4 sm:gap-12 mb-6 sm:mb-10">
         {['Personal', 'Professional', 'Payment'].map((label, index) => (
           <div key={index} className="flex flex-col items-center">
-            <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold transition-all ${
+            <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-base sm:text-lg font-bold transition-all ${
               index + 1 < currentStep ? 'bg-gradient-to-br from-pink-500 to-purple-500 text-white shadow-[0_0_20px_rgba(236,72,153,0.5)]' :
               index + 1 === currentStep ? 'bg-gradient-to-br from-pink-400 to-purple-400 text-white scale-110 shadow-[0_0_25px_rgba(236,72,153,0.6)]' :
               'bg-black/60 border-2 border-purple-500/30 text-purple-200'
             }`}>
               {index + 1 < currentStep ? '✓' : index + 1}
             </div>
-            <p className="text-sm mt-3 text-purple-200 font-medium">{label}</p>
+            <p className="text-xs sm:text-sm mt-2 sm:mt-3 text-purple-200 font-medium">{label}</p>
           </div>
         ))}
       </div>
 
       {/* Form Steps */}
-      <div className="space-y-6">
+      <div className="space-y-4 sm:space-y-6">
         {currentStep === 1 && (
           <>
-            <h2 className="text-2xl font-semibold text-center bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Personal Information</h2>
-            <div className="space-y-6">
+            <h2 className="text-xl sm:text-2xl font-semibold text-center bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Personal Information</h2>
+            <div className="space-y-4 sm:space-y-6">
               <div>
-                <label className="block text-base font-medium text-purple-100 mb-2" htmlFor="fullName">
+                <label className="block text-sm sm:text-base font-medium text-purple-100 mb-2" htmlFor="fullName">
                   Full Name <span className="text-pink-400">*</span>
-                  <span className="block text-sm text-purple-200/70 mt-1">As per IC/Passport</span>
+                  <span className="block text-xs sm:text-sm text-purple-200/70 mt-1">As per IC/Passport</span>
                 </label>
                 <input
                   id="fullName"
@@ -355,16 +355,16 @@ const Form = ({ onClose }) => {
                   value={formData.fullName}
                   onChange={handleInputChange}
                   placeholder="Enter your full name"
-                  className="w-full px-5 py-3 bg-black/50 border border-purple-500/40 rounded-xl text-white text-base focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all placeholder-purple-200/50"
+                  className="w-full px-3 sm:px-5 py-3 bg-black/50 border border-purple-500/40 rounded-xl text-white text-sm sm:text-base focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all placeholder-purple-200/50"
                   required
                   aria-required="true"
                 />
               </div>
 
               <div>
-                <label className="block text-base font-medium text-purple-100 mb-2" htmlFor="email">
+                <label className="block text-sm sm:text-base font-medium text-purple-100 mb-2" htmlFor="email">
                   Email Address <span className="text-pink-400">*</span>
-                  <span className="block text-sm text-purple-200/70 mt-1">Your ticket will be sent here</span>
+                  <span className="block text-xs sm:text-sm text-purple-200/70 mt-1">Your ticket will be sent here</span>
                 </label>
                 <input
                   id="email"
@@ -373,22 +373,22 @@ const Form = ({ onClose }) => {
                   value={formData.email}
                   onChange={handleInputChange}
                   placeholder="your.email@example.com"
-                  className="w-full px-5 py-3 bg-black/50 border border-purple-500/40 rounded-xl text-white text-base focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all placeholder-purple-200/50"
+                  className="w-full px-3 sm:px-5 py-3 bg-black/50 border border-purple-500/40 rounded-xl text-white text-sm sm:text-base focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all placeholder-purple-200/50"
                   required
                   aria-required="true"
                 />
               </div>
 
               <div>
-                <label className="block text-base font-medium text-purple-100 mb-2" htmlFor="phoneNumber">
+                <label className="block text-sm sm:text-base font-medium text-purple-100 mb-2" htmlFor="phoneNumber">
                   Phone Number <span className="text-pink-400">*</span>
                 </label>
-                <div className="flex gap-3">
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                   <select
                     name="countryCode"
                     value={formData.countryCode}
                     onChange={handleInputChange}
-                    className="w-32 px-5 py-3 bg-black/50 border border-purple-500/40 rounded-xl text-white text-base focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all cursor-pointer"
+                    className="w-full sm:w-32 px-3 sm:px-5 py-3 bg-black/50 border border-purple-500/40 rounded-xl text-white text-sm sm:text-base focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all cursor-pointer"
                     aria-label="Country code"
                   >
                     {countryCodes.map((country, index) => (
@@ -404,7 +404,7 @@ const Form = ({ onClose }) => {
                     value={formData.phoneNumber}
                     onChange={handleInputChange}
                     placeholder="123456789"
-                    className="flex-1 px-5 py-3 bg-black/50 border border-purple-500/40 rounded-xl text-white text-base focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all placeholder-purple-200/50"
+                    className="w-full px-3 sm:px-5 py-3 bg-black/50 border border-purple-500/40 rounded-xl text-white text-sm sm:text-base focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all placeholder-purple-200/50"
                     required
                     aria-required="true"
                   />
@@ -416,10 +416,10 @@ const Form = ({ onClose }) => {
 
         {currentStep === 2 && (
           <>
-            <h2 className="text-2xl font-semibold text-center bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Professional Information</h2>
-            <div className="space-y-8">
+            <h2 className="text-xl sm:text-2xl font-semibold text-center bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Professional Information</h2>
+            <div className="space-y-6 sm:space-y-8">
               <div>
-                <label className="block text-base font-medium text-purple-100 mb-3" htmlFor="position">
+                <label className="block text-sm sm:text-base font-medium text-purple-100 mb-2 sm:mb-3" htmlFor="position">
                   Position <span className="text-pink-400">*</span>
                 </label>
                 <input
@@ -429,14 +429,14 @@ const Form = ({ onClose }) => {
                   value={formData.position}
                   onChange={handleInputChange}
                   placeholder="Your job title"
-                  className="w-full px-5 py-4 bg-black/50 border border-purple-500/40 rounded-xl text-white text-base focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all placeholder-purple-200/50"
+                  className="w-full px-3 sm:px-5 py-3 sm:py-4 bg-black/50 border border-purple-500/40 rounded-xl text-white text-sm sm:text-base focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all placeholder-purple-200/50"
                   required
                   aria-required="true"
                 />
               </div>
 
               <div>
-                <label className="block text-base font-medium text-purple-100 mb-3" htmlFor="industry">
+                <label className="block text-sm sm:text-base font-medium text-purple-100 mb-2 sm:mb-3" htmlFor="industry">
                   Industry <span className="text-pink-400">*</span>
                 </label>
                 <select
@@ -444,7 +444,7 @@ const Form = ({ onClose }) => {
                   name="industry"
                   value={formData.industry}
                   onChange={handleInputChange}
-                  className="w-full px-5 py-4 bg-black/50 border border-purple-500/40 rounded-xl text-white text-base focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all cursor-pointer"
+                  className="w-full px-3 sm:px-5 py-3 sm:py-4 bg-black/50 border border-purple-500/40 rounded-xl text-white text-sm sm:text-base focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all cursor-pointer"
                   required
                   aria-required="true"
                 >
@@ -462,29 +462,29 @@ const Form = ({ onClose }) => {
 
         {currentStep === 3 && (
           <>
-            <h2 className="text-2xl font-semibold text-center bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Complete Registration</h2>
+            <h2 className="text-xl sm:text-2xl font-semibold text-center bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Complete Registration</h2>
 
             {/* Promo Code Section */}
-            <div className="bg-black/60 rounded-2xl p-6 border border-purple-500/40 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
-              <h3 className="text-lg font-semibold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent mb-4">Promo Code (Optional)</h3>
+            <div className="bg-black/60 rounded-2xl p-4 sm:p-6 border border-purple-500/40 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
+              <h3 className="text-base sm:text-lg font-semibold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent mb-3 sm:mb-4">Promo Code (Optional)</h3>
               <input
                 type="text"
                 name="specialcode"
                 value={formData.specialcode}
                 onChange={handleInputChange}
                 placeholder="Enter promo code"
-                className="w-full px-5 py-3 bg-black/70 border border-purple-500/40 rounded-xl text-white text-base focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all placeholder-purple-200/50"
+                className="w-full px-3 sm:px-5 py-3 bg-black/70 border border-purple-500/40 rounded-xl text-white text-sm sm:text-base focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all placeholder-purple-200/50"
               />
               {promoMessage && (
-                <div className={`mt-4 p-4 rounded-xl text-base flex items-center gap-3 ${
+                <div className={`mt-3 sm:mt-4 p-3 sm:p-4 rounded-xl text-sm sm:text-base flex items-center gap-2 sm:gap-3 ${
                   isValidPromoCode ? 'bg-green-900/30 text-green-200 border border-green-500/40' : 'bg-pink-900/30 text-pink-200 border border-pink-500/40'
                 }`}>
                   {isValidPromoCode ? (
-                    <svg className="w-6 h-6 text-green-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="w-5 h-5 sm:w-6 sm:h-6 text-green-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
                   ) : (
-                    <svg className="w-6 h-6 text-pink-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="w-5 h-5 sm:w-6 sm:h-6 text-pink-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                     </svg>
                   )}
@@ -492,7 +492,7 @@ const Form = ({ onClose }) => {
                 </div>
               )}
               {isValidPromoCode && (
-                <div className="mt-4 p-4 bg-gradient-to-r from-pink-500/30 to-purple-500/30 rounded-xl text-center text-purple-100 text-base font-medium">
+                <div className="mt-3 sm:mt-4 p-3 sm:p-4 bg-gradient-to-r from-pink-500/30 to-purple-500/30 rounded-xl text-center text-purple-100 text-sm sm:text-base font-medium">
                   🎉 Registration is FREE with this code!
                 </div>
               )}
@@ -500,25 +500,25 @@ const Form = ({ onClose }) => {
 
             {/* Payment Section */}
             {!isValidPromoCode && (
-              <div className="bg-black/60 rounded-2xl p-6 border border-purple-500/40 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
-                <h3 className="text-lg font-semibold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent mb-4 text-center">Payment Information</h3>
-                <p className="text-purple-200 text-base mb-6 text-center">Scan to pay RM159 (incl. 6% SST) and upload your receipt.</p>
-                <div className="flex justify-center mb-6">
-                  <div className="bg-white/90 p-4 rounded-xl border border-pink-500/50 shadow-[0_0_20px_rgba(236,72,153,0.3)]">
+              <div className="bg-black/60 rounded-2xl p-4 sm:p-6 border border-purple-500/40 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
+                <h3 className="text-base sm:text-lg font-semibold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent mb-3 sm:mb-4 text-center">Payment Information</h3>
+                <p className="text-purple-200 text-sm sm:text-base mb-4 sm:mb-6 text-center">Scan to pay RM159 (incl. 6% SST) and upload your receipt.</p>
+                <div className="flex justify-center mb-4 sm:mb-6">
+                  <div className="bg-white/90 p-3 sm:p-4 rounded-xl border border-pink-500/50 shadow-[0_0_20px_rgba(236,72,153,0.3)]">
                     <img
                       src="/qr_code.jpg"
                       alt="Payment QR Code"
-                      className="w-80 h-80 object-contain"
+                      className="w-48 h-48 sm:w-80 sm:h-80 object-contain"
                     />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-base font-medium text-purple-100 mb-2">
+                  <label className="block text-sm sm:text-base font-medium text-purple-100 mb-2">
                     Upload Receipt <span className="text-pink-400">*</span>
-                    <span className="block text-sm text-purple-200/70 mt-1">PDF, JPG, or PNG (max 5MB)</span>
+                    <span className="block text-xs sm:text-sm text-purple-200/70 mt-1">PDF, JPG, or PNG (max 5MB)</span>
                   </label>
-                  <div className={`relative border-2 border-dashed rounded-xl p-6 transition-all cursor-pointer ${
-                    fileName ? 'border-pink-500 border-solid bg-pink-500/20' : 'border-purple-500/40 hover:border-pink-500'
+                  <div className={`relative border-2 border-dashed rounded-xl p-4 sm:p-6 transition-all cursor-pointer ${
+                    fileName ? 'border-pink-500 border:solid bg-pink-500/20' : 'border-purple-500/40 hover:border-pink-500'
                   }`}>
                     <input
                       type="file"
@@ -527,7 +527,7 @@ const Form = ({ onClose }) => {
                       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                       aria-label="Upload receipt"
                     />
-                    <div className="text-center text-base text-purple-200">
+                    <div className="text-center text-sm sm:text-base text-purple-200">
                       {fileName ? `✓ ${fileName}` : 'Drag & drop or click to upload'}
                     </div>
                   </div>
@@ -539,13 +539,13 @@ const Form = ({ onClose }) => {
       </div>
 
       {/* Navigation Buttons */}
-      <div className="sticky bottom-0 bg-black/90 pt-6 mt-8 border-t border-purple-500/30">
-        <div className="flex justify-between">
+      <div className="sticky bottom-0 bg-black/90 pt-4 sm:pt-6 mt-6 sm:mt-8 border-t border-purple-500/30">
+        <div className="flex flex-col sm:flex-row justify-between gap-2 sm:gap-0">
           {currentStep > 1 && (
             <button 
               onClick={prevStep} 
               disabled={isSubmitting}
-              className="px-8 py-3 bg-black/60 border border-purple-500/40 rounded-xl text-purple-200 text-base font-medium hover:bg-purple-500/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full sm:w-auto px-6 py-3 bg-black/60 border border-purple-500/40 rounded-xl text-purple-200 text-sm sm:text-base font-medium hover:bg-purple-500/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-purple-500"
             >
               Previous
             </button>
@@ -553,14 +553,14 @@ const Form = ({ onClose }) => {
           <button
             onClick={nextStep}
             disabled={isSubmitting}
-            className={`ml-auto px-8 py-3 rounded-xl text-base font-bold text-white transition-all shadow-[0_0_20px_rgba(236,72,153,0.4)] ${
+            className={`w-full sm:w-auto px-6 sm:px-8 py-3 rounded-xl text-sm sm:text-base font-bold text-white transition-all shadow-[0_0_20px_rgba(236,72,153,0.4)] ${
               isSubmitting ? 'bg-purple-500/50 cursor-not-allowed' :
               'bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-pink-500'
             }`}
           >
             {isSubmitting ? (
               <>
-                <svg className="inline-block w-5 h-5 mr-2 animate-spin" fill="none" viewBox="0 0 24 24">
+                <svg className="inline-block w-4 h-4 sm:w-5 sm:h-5 mr-2 animate-spin" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
@@ -574,18 +574,18 @@ const Form = ({ onClose }) => {
       {/* Success Modal */}
       {showSuccessModal && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/80 backdrop-blur-md" onClick={handleSuccessClose}>
-          <div className="bg-black/90 p-10 rounded-3xl max-w-md w-full border border-pink-500/30 shadow-[0_0_30px_rgba(236,72,153,0.3)]" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-black/90 p-6 sm:p-10 rounded-2xl sm:rounded-3xl max-w-sm sm:max-w-md w-full border border-pink-500/30 shadow-[0_0_30px_rgba(236,72,153,0.3)]" onClick={(e) => e.stopPropagation()}>
             <div className="text-center">
-              <div className="w-20 h-20 bg-gradient-to-br from-pink-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-[0_0_25px_rgba(236,72,153,0.5)]">
-                <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-pink-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-[0_0_25px_rgba(236,72,153,0.5)]">
+                <svg className="w-8 h-8 sm:w-10 sm:h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent mb-4">Registration Successful!</h3>
-              <p className="text-base text-purple-200 mb-8">Check your email for your QR code ticket. Contact Amy at <a href="tel:+60176617262" className="text-pink-400 hover:underline">017-661 7262</a> for assistance.</p>
+              <h3 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent mb-3 sm:mb-4">Registration Successful!</h3>
+              <p className="text-sm sm:text-base text-purple-200 mb-6 sm:mb-8">Check your email for your QR code ticket. Contact Amy at <a href="tel:+60176617262" className="text-pink-400 hover:underline">017-661 7262</a> for assistance.</p>
               <button 
                 onClick={handleSuccessClose} 
-                className="w-full py-4 bg-gradient-to-r from-pink-500 to-purple-500 rounded-xl text-white text-base font-bold hover:from-pink-600 hover:to-purple-600 transition-all focus:outline-none focus:ring-2 focus:ring-pink-500"
+                className="w-full py-3 sm:py-4 bg-gradient-to-r from-pink-500 to-purple-500 rounded-xl text-white text-sm sm:text-base font-bold hover:from-pink-600 hover:to-purple-600 transition-all focus:outline-none focus:ring-2 focus:ring-pink-500"
               >
                 Close
               </button>
@@ -595,20 +595,20 @@ const Form = ({ onClose }) => {
       )}
 
       {/* Requirement Modal */}
-      {showSuccessModal && (
+      {showRequirementModal && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/80 backdrop-blur-md" onClick={() => setShowRequirementModal(false)}>
-          <div className="bg-black/90 p-10 rounded-3xl max-w-md w-full border border-pink-500/30 shadow-[0_0_30px_rgba(236,72,153,0.3)]" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-black/90 p-6 sm:p-10 rounded-2xl sm:rounded-3xl max-w-sm sm:max-w-md w-full border border-pink-500/30 shadow-[0_0_30px_rgba(236,72,153,0.3)]" onClick={(e) => e.stopPropagation()}>
             <div className="text-center">
-              <div className="w-20 h-20 bg-pink-500/30 rounded-full flex items-center justify-center mx-auto mb-6">
-                <svg className="w-10 h-10 text-pink-400" fill="currentColor" viewBox="0 0 20 20">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-pink-500/30 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                <svg className="w-8 h-8 sm:w-10 sm:h-10 text-pink-400" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent mb-4">Action Required</h3>
-              <p className="text-base text-purple-200 mb-8">Please upload a payment receipt or enter a valid promo code to complete your registration.</p>
+              <h3 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent mb-3 sm:mb-4">Action Required</h3>
+              <p className="text-sm sm:text-base text-purple-200 mb-6 sm:mb-8">Please upload a payment receipt or enter a valid promo code to complete your registration.</p>
               <button 
                 onClick={() => setShowRequirementModal(false)} 
-                className="w-full py-4 bg-gradient-to-r from-pink-500 to-purple-500 rounded-xl text-white text-base font-bold hover:from-pink-600 hover:to-purple-600 transition-all focus:outline-none focus:ring-2 focus:ring-pink-500"
+                className="w-full py-3 sm:py-4 bg-gradient-to-r from-pink-500 to-purple-500 rounded-xl text-white text-sm sm:text-base font-bold hover:from-pink-600 hover:to-purple-600 transition-all focus:outline-none focus:ring-2 focus:ring-pink-500"
               >
                 Got It
               </button>
