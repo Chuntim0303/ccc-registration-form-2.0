@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, MapPin, Users, Clock, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Calendar, MapPin, Users, Clock, ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
 
 const ConfettiLandingPage = ({ onShowForm }) => {
   const [timeLeft, setTimeLeft] = useState({
@@ -147,20 +147,26 @@ const ConfettiLandingPage = ({ onShowForm }) => {
         </div>
       </div>
 
-      {/* Poster Section */}
+      {/* Poster Section – Full Screen with Scroll Indicator */}
       <section className="relative h-screen px-4 z-10">
         <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-transparent"></div>
+        
         <div className="relative z-10 h-full flex items-center justify-center p-4">
           <img 
-            src="https://storage.googleapis.com/msgsndr/fwa898U4hQFevOOZ1miD/media/68c7b7151708d0dd2494d18f.png" 
+            src="/poster.png" 
             alt="Confetti Circle Club Poster" 
             className="w-full h-auto max-h-[90vh] object-contain drop-shadow-[0_0_30px_rgba(236,72,153,0.5)]"
           />
         </div>
+
+        {/* Scroll Down Indicator – Mobile Only */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 animate-bounce md:hidden">
+          <ChevronDown className="w-8 h-8 text-pink-400" />
+        </div>
       </section>
 
-      {/* Hero Section */}
-      <section className="relative px-4 py-8 md:py-12 z-10">
+      {/* Hero Section – Pull up slightly on mobile to reduce gap */}
+      <section className="relative px-4 py-8 md:py-12 z-10 -mt-8 md:mt-0">
         <div className="relative z-10 text-center max-w-6xl mx-auto">
           {/* Countdown */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 max-w-2xl mx-auto mb-8 md:mb-12">
@@ -246,20 +252,16 @@ const ConfettiLandingPage = ({ onShowForm }) => {
         <div className="max-w-6xl mx-auto">
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-8 md:mb-12 text-center bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">你将收获什么？</h2>
           
-          {/* REVISED: Use flexbox for centering and wrapping */}
           <div className="flex flex-wrap justify-center gap-4 md:gap-6 px-4">
             {[
-              "⚡ 结识 500+ 企业家 & 行业领袖",
-              "⚡ 进入真实高效的资源对接环境",
-              "⚡ 参与思想圆桌与趋势分享",
-              "⚡ 见证合作战略签署",
-              "⚡ 长期进入商业合作生态圈"
+              "结识 500+ 企业家 & 行业领袖",
+              "进入真实高效的资源对接环境",
+              "参与思想圆桌与趋势分享",
+              "见证合作战略签署",
+              "长期进入商业合作生态圈"
             ].map((benefit, idx) => (
               <div 
                 key={idx} 
-                // Set max width for the box so it doesn't span the full container
-                // On small screens, it takes full width (w-full), then max-w-sm on larger screens.
-                // This ensures it wraps nicely and is centered.
                 className="w-full sm:max-w-sm md:max-w-md lg:max-w-xs bg-black/60 backdrop-blur-md rounded-xl p-4 md:p-6 text-center border border-pink-500/30 shadow-[0_0_20px_rgba(236,72,153,0.2)]"
               >
                 <h3 className="text-base md:text-xl font-semibold text-gray-200">{benefit}</h3>
@@ -324,7 +326,7 @@ const ConfettiLandingPage = ({ onShowForm }) => {
 
             {/* First YouTube Video */}
             <div className="max-w-5xl mx-auto">
-              <div className="relative rounded-xl md:rounded-2xl overflow-hidden shadow-2xl border border-pink-500/30 shadow-[0_0_40px_rgba(236,72,153,0.3)]" style={{ paddingBottom: '56.25%', height: 0 }}>
+              <div className="relative rounded-xl md:rounded-2  overflow-hidden shadow-2xl border border-pink-500/30 shadow-[0_0_40px_rgba(236,72,153,0.3)]" style={{ paddingBottom: '56.25%', height: 0 }}>
                 <iframe
                   src={youtubeVideos[0]}
                   title="Event video 1"
@@ -396,37 +398,36 @@ const ConfettiLandingPage = ({ onShowForm }) => {
         </div>
       </section>
 
-{/* Upgrade Highlights Section - Mobile Friendly */}
-<section className="py-12 md:py-20 px-4 relative z-10 bg-gradient-to-b from-transparent via-purple-900/10 to-transparent">
-  <div className="max-w-6xl mx-auto">
-    <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-8 md:mb-12 text-center bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
-      Confetti Circle Club 3.0 升级亮点
-    </h2>
+      {/* Upgrade Highlights Section */}
+      <section className="py-12 md:py-20 px-4 relative z-10 bg-gradient-to-b from-transparent via-purple-900/10 to-transparent">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-8 md:mb-12 text-center bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
+            Confetti Circle Club 3.0 升级亮点
+          </h2>
 
-    {/* Responsive Grid: 1 col on mobile, 2 on md, 4 on lg */}
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-      {[
-        { title: "🎉 独特氛围", desc: "体验高端环境结合不同美酒美食拓展人脉，体验舒适欢乐进行交流。" },
-        { title: "🤝 高效连结", desc: "高质量的环境中精准拓展您的人脉，获取可持续的合作机会。" },
-        { title: "🍷 资源共享", desc: "拓展人脉可以扩展更多合作可能性，把商业价值最大化。" },
-        { title: "🎮 品牌曝光", desc: "通过企业高质人群让品牌快速在现场打造知名度，产生合作机遇。" }
-      ].map((item, idx) => (
-        <div
-          key={idx}
-          className="bg-black/60 backdrop-blur-md rounded-xl p-5 md:p-6 text-center border border-pink-500/30 shadow-[0_0_20px_rgba(236,72,153,0.2)] 
-                     flex flex-col justify-center min-h-[140px] md:min-h-[160px]"
-        >
-          <h3 className="text-lg md:text-xl font-semibold text-gray-200 leading-tight">
-            {item.title}
-          </h3>
-          <p className="text-xs md:text-sm text-gray-400 mt-2 font-normal leading-relaxed">
-            {item.desc}
-          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+            {[
+              { title: "独特氛围", desc: "体验高端环境结合不同美酒美食拓展人脉，体验舒适欢乐进行交流。" },
+              { title: "高效连结", desc: "高质量的环境中精准拓展您的人脉，获取可持续的合作机会。" },
+              { title: "资源共享", desc: "拓展人脉可以扩展更多合作可能性，把商业价值最大化。" },
+              { title: "品牌曝光", desc: "通过企业高质人群让品牌快速在现场打造知名度，产生合作机遇。" }
+            ].map((item, idx) => (
+              <div
+                key={idx}
+                className="bg-black/60 backdrop-blur-md rounded-xl p-5 md:p-6 text-center border border-pink-500/30 shadow-[0_0_20px_rgba(236,72,153,0.2)] 
+                           flex flex-col justify-center min-h-[140px] md:min-h-[160px]"
+              >
+                <h3 className="text-lg md:text-xl font-semibold text-gray-200 leading-tight">
+                  {item.title}
+                </h3>
+                <p className="text-xs md:text-sm text-gray-400 mt-2 font-normal leading-relaxed">
+                  {item.desc}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
-      ))}
-    </div>
-  </div>
-</section>
+      </section>
 
       {/* Testimonials */}
       <section className="py-12 md:py-20 px-4 relative z-10">
@@ -487,63 +488,63 @@ const ConfettiLandingPage = ({ onShowForm }) => {
         </div>
       </section>
 
-{/* Final CTA */}
-<section className="py-12 md:py-20 px-4 relative z-10">
-  <div className="max-w-6xl mx-auto">
-    <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
-      {/* Left side - Content */}
-      <div className="lg:w-1/2 text-center lg:text-left">
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 md:mb-4 bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
-          Confetti Circle Club 4.0
-        </h2>
-        <p className="text-lg md:text-xl mb-2">500+ 企业家 · 创新者 · 行业领袖齐聚</p>
-        <p className="text-base md:text-lg mb-4 md:mb-6 text-purple-300">连接 · 启发 · 转化</p>
-        
-        <div className="bg-black/60 backdrop-blur-md rounded-xl p-6 md:p-8 mb-6 md:mb-8 border border-pink-500/30 shadow-[0_0_30px_rgba(236,72,153,0.2)] text-sm md:text-base">
-          <p className="mb-2 text-gray-300"><strong className="text-pink-400">日期:</strong> 11月26日 (Wednesday)</p>
-          <p className="mb-2 text-gray-300"><strong className="text-pink-400">时间:</strong> 5:30 PM – 10:00 PM</p>
-          <p className="mb-2 text-gray-300"><strong className="text-pink-400">🎫 门票 RM159</strong> (RM150 + 6%sst /pax)</p>
-          <p className="mb-2 text-gray-300"><strong className="text-pink-400">📍Confetti KL</strong> (Mines 2, Seri Kembangan)</p>
-          <p className="text-xs md:text-sm text-gray-400">Ground floor Retail Block, Pusat Perdagangan Mines 2,</p>
-          <p className="text-xs md:text-sm mb-3 md:mb-4 text-gray-400">Mines Wellness City, 43300 Seri Kembangan, Selangor.</p>
-          <p className="text-xs md:text-sm text-gray-300">
-            <strong className="text-pink-400">Whatsapp:</strong>{' '}
-            <a href="https://wa.link/540nlz" className="underline hover:text-pink-300 text-purple-300 break-all">
-              017-6617262 (Amy - Member Support)
-            </a>
-          </p>
-        </div>
-        
-        <button 
-          onClick={onShowForm}
-          className="w-full md:w-auto bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold py-3 md:py-4 px-8 md:px-12 rounded-full hover:from-pink-600 hover:to-purple-600 transition-all transform hover:scale-105 shadow-[0_0_40px_rgba(236,72,153,0.6)] border border-pink-400/50 text-sm md:text-base"
-        >
-          REGISTER NOW
-        </button>
-      </div>
+      {/* Final CTA */}
+      <section className="py-12 md:py-20 px-4 relative z-10">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
+            {/* Left side - Content */}
+            <div className="lg:w-1/2 text-center lg:text-left">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 md:mb-4 bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
+                Confetti Circle Club 4.0
+              </h2>
+              <p className="text-lg md:text-xl mb-2">500+ 企业家 · 创新者 · 行业领袖齐聚</p>
+              <p className="text-base md:text-lg mb-4 md:mb-6 text-purple-300">连接 · 启发 · 转化</p>
+              
+              <div className="bg-black/60 backdrop-blur-md rounded-xl p-6 md:p-8 mb-6 md:mb-8 border border-pink-500/30 shadow-[0_0_30px_rgba(236,72,153,0.2)] text-sm md:text-base">
+                <p className="mb-2 text-gray-300"><strong className="text-pink-400">日期:</strong> 11月26日 (Wednesday)</p>
+                <p className="mb-2 text-gray-300"><strong className="text-pink-400">时间:</strong> 5:30 PM – 10:00 PM</p>
+                <p className="mb-2 text-gray-300"><strong className="text-pink-400">门票 RM159</strong> (RM150 + 6%sst /pax)</p>
+                <p className="mb-2 text-gray-300"><strong className="text-pink-400">Confetti KL</strong> (Mines 2, Seri Kembangan)</p>
+                <p className="text-xs md:text-sm text-gray-400">Ground floor Retail Block, Pusat Perdagangan Mines 2,</p>
+                <p className="text-xs md:text-sm mb-3 md:mb-4 text-gray-400">Mines Wellness City, 43300 Seri Kembangan, Selangor.</p>
+                <p className="text-xs md:text-sm text-gray-300">
+                  <strong className="text-pink-400">Whatsapp:</strong>{' '}
+                  <a href="https://wa.link/540nlz" className="underline hover:text-pink-300 text-purple-300 break-all">
+                    017-6617262 (Amy - Member Support)
+                  </a>
+                </p>
+              </div>
+              
+              <button 
+                onClick={onShowForm}
+                className="w-full md:w-auto bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold py-3 md:py-4 px-8 md:px-12 rounded-full hover:from-pink-600 hover:to-purple-600 transition-all transform hover:scale-105 shadow-[0_0_40px_rgba(236,72,153,0.6)] border border-pink-400/50 text-sm md:text-base"
+              >
+                REGISTER NOW
+              </button>
+            </div>
 
-      {/* Right side - Google Map */}
-      <div className="lg:w-1/2 w-full">
-        <div className="bg-black/40 backdrop-blur-sm rounded-xl overflow-hidden border border-purple-500/30 shadow-[0_0_20px_rgba(168,85,247,0.3)]">
-          <iframe
-      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3984.237868669636!2d101.7081257!3d3.0271893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31cdcb5ee33ac55f%3A0x5d377ad570dbc5fd!2sConfetti%20KL!5e0!3m2!1sen!2smy!4v1698765432100!5m2!1sen!2smy"
-      width="100%"
-      height="400"
-      style={{ border: 0, borderRadius: '12px' }}
-      allowFullScreen=""
-      loading="lazy"
-      referrerPolicy="no-referrer-when-downgrade"
-      title="Confetti KL Location"
-      className="w-full"
-    ></iframe>
+            {/* Right side - Google Map */}
+            <div className="lg:w-1/2 w-full">
+              <div className="bg-black/40 backdrop-blur-sm rounded-xl overflow-hidden border border-purple-500/30 shadow-[0_0_20px_rgba(168,85,247,0.3)]">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3984.237868669636!2d101.7081257!3d3.0271893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31cdcb5ee33ac55f%3A0x5d377ad570dbc5fd!2sConfetti%20KL!5e0!3m2!1sen!2smy!4v1698765432100!5m2!1sen!2smy"
+                  width="100%"
+                  height="400"
+                  style={{ border: 0, borderRadius: '12px' }}
+                  allowFullScreen=""
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Confetti KL Location"
+                  className="w-full"
+                ></iframe>
+              </div>
+              <p className="text-xs text-gray-400 mt-2 text-center lg:text-left">
+                Confetti KL - Ground floor Retail Block, Pusat Perdagangan Mines 2
+              </p>
+            </div>
+          </div>
         </div>
-        <p className="text-xs text-gray-400 mt-2 text-center lg:text-left">
-          📍 Confetti KL - Ground floor Retail Block, Pusat Perdagangan Mines 2
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
+      </section>
     </div>
   );
 };
