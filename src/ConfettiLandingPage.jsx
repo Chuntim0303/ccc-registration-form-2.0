@@ -14,7 +14,7 @@ const ConfettiLandingPage = ({ onShowForm }) => {
   const [openFaq, setOpenFaq] = useState(null);
 
   useEffect(() => {
-    const targetDate = new Date('2025-10-29T00:00:00+08:00');
+    const targetDate = new Date('2025-11-26T17:30:00+08:00');
     
     const timer = setInterval(() => {
       const now = new Date();
@@ -35,19 +35,19 @@ const ConfettiLandingPage = ({ onShowForm }) => {
 
   // Image carousel data
   const carouselImages1 = [
-    "https://storage.googleapis.com/msgsndr/fwa898U4hQFevOOZ1miD/media/68c04919e7a3ab4980142e4c.jpeg",
     "https://storage.googleapis.com/msgsndr/fwa898U4hQFevOOZ1miD/media/68bfce1f839785d8d1420c04.jpeg",
-    "https://storage.googleapis.com/msgsndr/fwa898U4hQFevOOZ1miD/media/68bfcef2fbf3b67a199b9367.jpeg",
-    "https://storage.googleapis.com/msgsndr/fwa898U4hQFevOOZ1miD/media/68bfcf07394e52f499b66e9f.jpeg",
-    "https://storage.googleapis.com/msgsndr/fwa898U4hQFevOOZ1miD/media/68bfcefddb3e006d4b642ac0.jpeg"
+    "https://storage.googleapis.com/msgsndr/fwa898U4hQFevOOZ1miD/media/6900711f82533b3ea4412bb6.jpeg",
+    "https://storage.googleapis.com/msgsndr/fwa898U4hQFevOOZ1miD/media/6900711435514ebe4b0bcfdb.jpeg",
+    "https://storage.googleapis.com/msgsndr/fwa898U4hQFevOOZ1miD/media/6900711a35514ed1850bd090.jpeg",
+    "https://storage.googleapis.com/msgsndr/fwa898U4hQFevOOZ1miD/media/6900735082533b472341679b.jpeg"
   ];
 
   const carouselImages2 = [
-    "https://storage.googleapis.com/msgsndr/fwa898U4hQFevOOZ1miD/media/68bfcef2fbf3b67a199b9367.jpeg",
-    "https://storage.googleapis.com/msgsndr/fwa898U4hQFevOOZ1miD/media/68bbd0561ff6ea0fe51444bb.jpeg",
-    "https://storage.googleapis.com/msgsndr/fwa898U4hQFevOOZ1miD/media/68c049057cf8d6d5b68d4986.jpeg",
-    "https://storage.googleapis.com/msgsndr/fwa898U4hQFevOOZ1miD/media/68c0490a839785d3037168fc.jpeg",
-    "https://storage.googleapis.com/msgsndr/fwa898U4hQFevOOZ1miD/media/68c0491432f3397573de6d09.jpeg"
+    "https://storage.googleapis.com/msgsndr/fwa898U4hQFevOOZ1miD/media/6900734db671ff6333221cf7.jpeg",
+    "https://storage.googleapis.com/msgsndr/fwa898U4hQFevOOZ1miD/media/6900735735514e04c80c0dc3.jpeg",
+    "https://storage.googleapis.com/msgsndr/fwa898U4hQFevOOZ1miD/media/6900735082533b472341679b.jpeg",
+    "https://storage.googleapis.com/msgsndr/fwa898U4hQFevOOZ1miD/media/6900733c82533be28f41661f.jpeg",
+    "https://storage.googleapis.com/msgsndr/fwa898U4hQFevOOZ1miD/media/6900734835514ea01e0c0cc4.jpeg"
   ];
 
   // YouTube video URLs
@@ -180,7 +180,7 @@ const ConfettiLandingPage = ({ onShowForm }) => {
           {/* Event Card */}
           <div className="bg-gradient-to-br from-pink-600/20 to-purple-600/20 backdrop-blur-md rounded-2xl md:rounded-3xl p-6 md:p-8 shadow-2xl border border-pink-500/30 max-w-4xl mx-auto">
             <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
-              Confetti Circle Club 3.0
+              Confetti Circle Club 4.0
             </h1>
             <p className="text-lg md:text-xl mb-2">500+ 企业家 · 创新者 · 行业领袖齐聚</p>
             <p className="text-base md:text-lg mb-4 md:mb-6 text-purple-300">连接 · 启发 · 转化</p>
@@ -188,7 +188,7 @@ const ConfettiLandingPage = ({ onShowForm }) => {
             <div className="space-y-2 text-left max-w-md mx-auto mb-6 md:mb-8">
               <p className="flex items-center gap-2 text-sm md:text-base">
                 <Calendar size={18} className="text-pink-400 flex-shrink-0" />
-                日期: 2025年10月29日 (星期三)
+                日期: 2025年11月26日 (星期三)
               </p>
               <p className="flex items-center gap-2 text-sm md:text-base">
                 <Clock size={18} className="text-pink-400 flex-shrink-0" />
@@ -229,8 +229,8 @@ const ConfettiLandingPage = ({ onShowForm }) => {
           <div className="grid md:grid-cols-3 gap-4 md:gap-8 px-4">
             {[
               { title: "延续性", desc: "不是一次性聚会，而是一个可长期扩展商业合作的生态圈。" },
-              { title: "结构化设计", desc: "狂欢区 / 交流区 / 游戏区 / 战略签署，互动自然发生。" },
-              { title: "真实转化", desc: "往届 92% 参会者表示收获了可跟进的商业机会。" }
+              { title: "结构化设计", desc: "通过欢乐环节带动交流氛围创建合作互动自然发生。" },
+              { title: "共享商业价值", desc: "往届 92% 参会者表示收获了可跟进的商业机会。" }
             ].map((item, idx) => (
               <div key={idx} className="bg-black/60 backdrop-blur-md rounded-xl p-4 md:p-6 border border-pink-500/30 shadow-[0_0_20px_rgba(236,72,153,0.2)]">
                 <h3 className="text-xl md:text-2xl font-bold mb-2 md:mb-4 text-pink-400">{item.title}</h3>
@@ -241,7 +241,7 @@ const ConfettiLandingPage = ({ onShowForm }) => {
         </div>
       </section>
 
-{/* Benefits Section */}
+      {/* Benefits Section */}
       <section className="py-12 md:py-20 px-4 relative z-10 bg-gradient-to-b from-transparent via-purple-900/10 to-transparent">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-8 md:mb-12 text-center bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">你将收获什么？</h2>
@@ -396,7 +396,37 @@ const ConfettiLandingPage = ({ onShowForm }) => {
         </div>
       </section>
 
+{/* Upgrade Highlights Section - Mobile Friendly */}
+<section className="py-12 md:py-20 px-4 relative z-10 bg-gradient-to-b from-transparent via-purple-900/10 to-transparent">
+  <div className="max-w-6xl mx-auto">
+    <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-8 md:mb-12 text-center bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
+      Confetti Circle Club 3.0 升级亮点
+    </h2>
 
+    {/* Responsive Grid: 1 col on mobile, 2 on md, 4 on lg */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+      {[
+        { title: "🎉 独特氛围", desc: "体验高端环境结合不同美酒美食拓展人脉，体验舒适欢乐进行交流。" },
+        { title: "🤝 高效连结", desc: "高质量的环境中精准拓展您的人脉，获取可持续的合作机会。" },
+        { title: "🍷 资源共享", desc: "拓展人脉可以扩展更多合作可能性，把商业价值最大化。" },
+        { title: "🎮 品牌曝光", desc: "通过企业高质人群让品牌快速在现场打造知名度，产生合作机遇。" }
+      ].map((item, idx) => (
+        <div
+          key={idx}
+          className="bg-black/60 backdrop-blur-md rounded-xl p-5 md:p-6 text-center border border-pink-500/30 shadow-[0_0_20px_rgba(236,72,153,0.2)] 
+                     flex flex-col justify-center min-h-[140px] md:min-h-[160px]"
+        >
+          <h3 className="text-lg md:text-xl font-semibold text-gray-200 leading-tight">
+            {item.title}
+          </h3>
+          <p className="text-xs md:text-sm text-gray-400 mt-2 font-normal leading-relaxed">
+            {item.desc}
+          </p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* Testimonials */}
       <section className="py-12 md:py-20 px-4 relative z-10">
@@ -464,13 +494,13 @@ const ConfettiLandingPage = ({ onShowForm }) => {
       {/* Left side - Content */}
       <div className="lg:w-1/2 text-center lg:text-left">
         <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 md:mb-4 bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
-          Confetti Circle Club 3.0
+          Confetti Circle Club 4.0
         </h2>
         <p className="text-lg md:text-xl mb-2">500+ 企业家 · 创新者 · 行业领袖齐聚</p>
         <p className="text-base md:text-lg mb-4 md:mb-6 text-purple-300">连接 · 启发 · 转化</p>
         
         <div className="bg-black/60 backdrop-blur-md rounded-xl p-6 md:p-8 mb-6 md:mb-8 border border-pink-500/30 shadow-[0_0_30px_rgba(236,72,153,0.2)] text-sm md:text-base">
-          <p className="mb-2 text-gray-300"><strong className="text-pink-400">日期:</strong> 10月29日 (Wednesday)</p>
+          <p className="mb-2 text-gray-300"><strong className="text-pink-400">日期:</strong> 11月26日 (Wednesday)</p>
           <p className="mb-2 text-gray-300"><strong className="text-pink-400">时间:</strong> 5:30 PM – 10:00 PM</p>
           <p className="mb-2 text-gray-300"><strong className="text-pink-400">🎫 门票 RM159</strong> (RM150 + 6%sst /pax)</p>
           <p className="mb-2 text-gray-300"><strong className="text-pink-400">📍Confetti KL</strong> (Mines 2, Seri Kembangan)</p>
