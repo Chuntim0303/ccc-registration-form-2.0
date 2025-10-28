@@ -404,7 +404,7 @@ const ConfettiLandingPage = ({ onShowForm }) => {
       <section className="py-12 md:py-20 px-4 relative z-10 bg-gradient-to-b from-transparent via-purple-900/10 to-transparent">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-8 md:mb-12 text-center bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
-            Confetti Circle Club 3.0 升级亮点
+            Confetti Circle Club 4.0 升级亮点
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
