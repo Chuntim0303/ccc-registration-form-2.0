@@ -147,25 +147,23 @@ const ConfettiLandingPage = ({ onShowForm }) => {
         </div>
       </div>
 
-{/* Poster Section – Full Screen with Scroll Indicator */}
-<section className="relative h-screen px-4 z-10 flex flex-col">
-  {/* Gradient Overlay */}
-  <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-transparent z-10"></div>
-  
-  {/* Poster Image - Centered but not covering bottom */}
-  <div className="flex-1 flex items-center justify-center relative z-0 px-4 pt-16 pb-24 md:pb-0">
-    <img 
-      src="/poster.png" 
-      alt="Confetti Circle Club Poster" 
-      className="w-full h-auto max-h-full object-contain drop-shadow-[0_0_30px_rgba(236,72,153,0.5)]"
-    />
-  </div>
+      {/* Poster Section – Full Screen with Scroll Indicator */}
+      <section className="relative h-screen px-4 z-10">
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-transparent"></div>
+        
+        <div className="relative z-10 h-full flex items-center justify-center p-4">
+          <img 
+            src="/poster.png" 
+            alt="Confetti Circle Club Poster" 
+            className="w-full h-auto max-h-[90vh] object-contain drop-shadow-[0_0_30px_rgba(236,72,153,0.5)]"
+          />
+        </div>
 
-  {/* Scroll Down Indicator – Always visible at bottom on mobile */}
-  <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 animate-bounce md:hidden">
-    <ChevronDown className="w-8 h-8 text-pink-400 drop-shadow-lg" />
-  </div>
-</section>
+        {/* Scroll Down Indicator – Mobile Only */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 animate-bounce md:hidden">
+          <ChevronDown className="w-8 h-8 text-pink-400" />
+        </div>
+      </section>
 
       {/* Hero Section – Pull up slightly on mobile to reduce gap */}
       <section className="relative px-4 py-8 md:py-12 z-10 -mt-8 md:mt-0">
