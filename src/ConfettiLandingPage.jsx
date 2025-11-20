@@ -298,125 +298,169 @@ const ConfettiLandingPage = ({ onShowForm }) => {
       
       {/* Media Section */}
       <section className="py-12 md:py-20 px-4 relative z-10 bg-gradient-to-b from-transparent via-purple-900/10 to-transparent">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-8 md:mb-12 text-center bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-8 md:mb-16 text-center bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
             活动精彩瞬间与回顾
           </h2>
-          
-          <div className="space-y-12 md:space-y-16">
-            {/* First Image Carousel */}
-            <div className="relative max-w-5xl mx-auto">
-              <div className="overflow-hidden rounded-xl md:rounded-2xl shadow-2xl border border-pink-500/30 shadow-[0_0_40px_rgba(236,72,153,0.3)]">
-                <div 
-                  className="flex transition-transform duration-500 ease-in-out"
-                  style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-                >
-                  {carouselImages1.map((image, index) => (
-                    <div key={index} className="w-full flex-shrink-0">
-                      <img 
-                        src={image} 
-                        alt={`Event moment ${index + 1}`}
-                        className="w-full h-64 md:h-80 lg:h-96 object-cover"
-                      />
+
+          <div className="space-y-16 md:space-y-24">
+            {/* First Row: Image Left, Text Right */}
+            <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-center">
+              {/* Image Carousel Left */}
+              <div className="w-full md:w-1/2">
+                <div className="relative">
+                  <div className="overflow-hidden rounded-xl shadow-2xl border border-pink-500/30 shadow-[0_0_40px_rgba(236,72,153,0.3)]">
+                    <div
+                      className="flex transition-transform duration-500 ease-in-out"
+                      style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+                    >
+                      {carouselImages1.map((image, index) => (
+                        <div key={index} className="w-full flex-shrink-0">
+                          <img
+                            src={image}
+                            alt={`Event moment ${index + 1}`}
+                            className="w-full h-64 md:h-80 lg:h-[400px] object-cover"
+                          />
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  </div>
+
+                  <button
+                    onClick={prevSlide}
+                    className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/20 backdrop-blur-md rounded-full p-2 md:p-3 hover:bg-white/30 transition-colors"
+                  >
+                    <ChevronLeft size={24} className="text-white" />
+                  </button>
+                  <button
+                    onClick={nextSlide}
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/20 backdrop-blur-md rounded-full p-2 md:p-3 hover:bg-white/30 transition-colors"
+                  >
+                    <ChevronRight size={24} className="text-white" />
+                  </button>
+
+                  <div className="flex justify-center mt-4 space-x-2">
+                    {carouselImages1.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setCurrentSlide(index)}
+                        className={`w-2 h-2 rounded-full transition-colors ${
+                          currentSlide === index ? 'bg-white' : 'bg-white/40'
+                        }`}
+                      />
+                    ))}
+                  </div>
                 </div>
               </div>
-              
-              <button 
-                onClick={prevSlide}
-                className="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 bg-pink-500/20 backdrop-blur-md rounded-full p-2 md:p-3 hover:bg-pink-500/40 transition-colors border border-pink-500/50"
-              >
-                <ChevronLeft size={20} className="md:w-7 md:h-7" />
-              </button>
-              <button 
-                onClick={nextSlide}
-                className="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 bg-pink-500/20 backdrop-blur-md rounded-full p-2 md:p-3 hover:bg-pink-500/40 transition-colors border border-pink-500/50"
-              >
-                <ChevronRight size={20} className="md:w-7 md:h-7" />
-              </button>
-              
-              <div className="flex justify-center mt-4 md:mt-6 space-x-2">
-                {carouselImages1.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentSlide(index)}
-                    className={`w-2 h-2 md:w-3 md:h-3 rounded-full transition-colors ${
-                      currentSlide === index ? 'bg-pink-400 shadow-[0_0_10px_rgba(236,72,153,0.8)]' : 'bg-pink-400/30'
-                    }`}
-                  />
-                ))}
-              </div>
-            </div>
 
-            {/* First YouTube Video */}
-            <div className="max-w-5xl mx-auto">
-              <div className="relative rounded-xl md:rounded-2  overflow-hidden shadow-2xl border border-pink-500/30 shadow-[0_0_40px_rgba(236,72,153,0.3)]" style={{ paddingBottom: '56.25%', height: 0 }}>
-                <iframe
-                  src={youtubeVideos[0]}
-                  title="Event video 1"
-                  className="absolute top-0 left-0 w-full h-full"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                ></iframe>
-              </div>
-            </div>
-
-            {/* Second Image Carousel */}
-            <div className="relative max-w-5xl mx-auto">
-              <div className="overflow-hidden rounded-xl md:rounded-2xl shadow-2xl border border-pink-500/30 shadow-[0_0_40px_rgba(236,72,153,0.3)]">
-                <div 
-                  className="flex transition-transform duration-500 ease-in-out"
-                  style={{ transform: `translateX(-${currentSlide2 * 100}%)` }}
-                >
-                  {carouselImages2.map((image, index) => (
-                    <div key={index} className="w-full flex-shrink-0">
-                      <img 
-                        src={image} 
-                        alt={`Event moment ${index + 4}`}
-                        className="w-full h-64 md:h-80 lg:h-96 object-cover"
-                      />
-                    </div>
-                  ))}
+              {/* Text Content Right */}
+              <div className="w-full md:w-1/2 text-center md:text-left">
+                <h3 className="text-3xl md:text-4xl font-bold mb-6 text-white">
+                  高效连结
+                </h3>
+                <div className="space-y-3 text-white text-base md:text-lg leading-relaxed">
+                  <p>打破传统社交的阻碍，</p>
+                  <p>以轻松欢愉的交流方式</p>
+                  <p>快速拉近人与人之间</p>
+                  <p className="mt-6">通过专业的</p>
+                  <p>现场主动化与互动环节</p>
+                  <p>确保每个人都有机会</p>
+                  <p>与更多志同道合的伙伴交流</p>
                 </div>
               </div>
-              
-              <button 
-                onClick={prevSlide2}
-                className="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 bg-pink-500/20 backdrop-blur-md rounded-full p-2 md:p-3 hover:bg-pink-500/40 transition-colors border border-pink-500/50"
-              >
-                <ChevronLeft size={20} className="md:w-7 md:h-7" />
-              </button>
-              <button 
-                onClick={nextSlide2}
-                className="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 bg-pink-500/20 backdrop-blur-md rounded-full p-2 md:p-3 hover:bg-pink-500/40 transition-colors border border-pink-500/50"
-              >
-                <ChevronRight size={20} className="md:w-7 md:h-7" />
-              </button>
-              
-              <div className="flex justify-center mt-4 md:mt-6 space-x-2">
-                {carouselImages2.map((_, index) => (
+            </div>
+
+            {/* Second Row: Text Left, Image Right */}
+            <div className="flex flex-col md:flex-row-reverse gap-8 md:gap-12 items-center">
+              {/* Image Carousel Right */}
+              <div className="w-full md:w-1/2">
+                <div className="relative">
+                  <div className="overflow-hidden rounded-xl shadow-2xl border border-pink-500/30 shadow-[0_0_40px_rgba(236,72,153,0.3)]">
+                    <div
+                      className="flex transition-transform duration-500 ease-in-out"
+                      style={{ transform: `translateX(-${currentSlide2 * 100}%)` }}
+                    >
+                      {carouselImages2.map((image, index) => (
+                        <div key={index} className="w-full flex-shrink-0">
+                          <img
+                            src={image}
+                            alt={`Event moment ${index + 4}`}
+                            className="w-full h-64 md:h-80 lg:h-[400px] object-cover"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
                   <button
-                    key={index}
-                    onClick={() => setCurrentSlide2(index)}
-                    className={`w-2 h-2 md:w-3 md:h-3 rounded-full transition-colors ${
-                      currentSlide2 === index ? 'bg-pink-400 shadow-[0_0_10px_rgba(236,72,153,0.8)]' : 'bg-pink-400/30'
-                    }`}
-                  />
-                ))}
+                    onClick={prevSlide2}
+                    className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/20 backdrop-blur-md rounded-full p-2 md:p-3 hover:bg-white/30 transition-colors"
+                  >
+                    <ChevronLeft size={24} className="text-white" />
+                  </button>
+                  <button
+                    onClick={nextSlide2}
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/20 backdrop-blur-md rounded-full p-2 md:p-3 hover:bg-white/30 transition-colors"
+                  >
+                    <ChevronRight size={24} className="text-white" />
+                  </button>
+
+                  <div className="flex justify-center mt-4 space-x-2">
+                    {carouselImages2.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setCurrentSlide2(index)}
+                        className={`w-2 h-2 rounded-full transition-colors ${
+                          currentSlide2 === index ? 'bg-white' : 'bg-white/40'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Text Content Left */}
+              <div className="w-full md:w-1/2 text-center md:text-left">
+                <h3 className="text-3xl md:text-4xl font-bold mb-6 text-white">
+                  轻松交流
+                </h3>
+                <div className="space-y-3 text-white text-base md:text-lg leading-relaxed">
+                  <p>宝贵是这样的礼中，</p>
+                  <p>做最善意地见到人</p>
+                  <p>致友无往而不乐宴会场</p>
+                  <p className="mt-6">轻松实现价值交换的目标</p>
+                  <p>实现了真聚散两全</p>
+                  <p>轻松又欢乐的交往交流</p>
+                </div>
               </div>
             </div>
 
-            {/* Second YouTube Video */}
-            <div className="max-w-5xl mx-auto">
-              <div className="relative rounded-xl md:rounded-2xl overflow-hidden shadow-2xl border border-pink-500/30 shadow-[0_0_40px_rgba(236,72,153,0.3)]" style={{ paddingBottom: '56.25%', height: 0 }}>
-                <iframe
-                  src={youtubeVideos[1]}
-                  title="Event video 2"
-                  className="absolute top-0 left-0 w-full h-full"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                ></iframe>
+            {/* YouTube Videos Section */}
+            <div className="space-y-12 md:space-y-16 mt-16">
+              {/* First YouTube Video */}
+              <div className="max-w-5xl mx-auto">
+                <div className="relative rounded-xl overflow-hidden shadow-2xl border border-pink-500/30 shadow-[0_0_40px_rgba(236,72,153,0.3)]" style={{ paddingBottom: '56.25%', height: 0 }}>
+                  <iframe
+                    src={youtubeVideos[0]}
+                    title="Event video 1"
+                    className="absolute top-0 left-0 w-full h-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+              </div>
+
+              {/* Second YouTube Video */}
+              <div className="max-w-5xl mx-auto">
+                <div className="relative rounded-xl overflow-hidden shadow-2xl border border-pink-500/30 shadow-[0_0_40px_rgba(236,72,153,0.3)]" style={{ paddingBottom: '56.25%', height: 0 }}>
+                  <iframe
+                    src={youtubeVideos[1]}
+                    title="Event video 2"
+                    className="absolute top-0 left-0 w-full h-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
+                </div>
               </div>
             </div>
           </div>
