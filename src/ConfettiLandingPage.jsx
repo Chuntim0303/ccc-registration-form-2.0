@@ -35,19 +35,17 @@ const ConfettiLandingPage = ({ onShowForm }) => {
 
   // Image carousel data
   const carouselImages1 = [
-    "https://storage.googleapis.com/msgsndr/fwa898U4hQFevOOZ1miD/media/68bfce1f839785d8d1420c04.jpeg",
-    "https://storage.googleapis.com/msgsndr/fwa898U4hQFevOOZ1miD/media/6900711f82533b3ea4412bb6.jpeg",
-    "https://storage.googleapis.com/msgsndr/fwa898U4hQFevOOZ1miD/media/6900711435514ebe4b0bcfdb.jpeg",
-    "https://storage.googleapis.com/msgsndr/fwa898U4hQFevOOZ1miD/media/6900711a35514ed1850bd090.jpeg",
-    "https://storage.googleapis.com/msgsndr/fwa898U4hQFevOOZ1miD/media/6900735082533b472341679b.jpeg"
+    "https://storage.googleapis.com/msgsndr/fwa898U4hQFevOOZ1miD/media/6900734db671ff6333221cf7.jpeg",
+    "https://storage.googleapis.com/msgsndr/fwa898U4hQFevOOZ1miD/media/6900713342187bdbd2d740d7.jpeg",
+    "https://storage.googleapis.com/msgsndr/fwa898U4hQFevOOZ1miD/media/6900711142187bc0a1d73d6d.jpeg",
+    "https://storage.googleapis.com/msgsndr/fwa898U4hQFevOOZ1miD/media/6900711435514ebe4b0bcfdb.jpeg"
   ];
 
   const carouselImages2 = [
-    "https://storage.googleapis.com/msgsndr/fwa898U4hQFevOOZ1miD/media/6900734db671ff6333221cf7.jpeg",
     "https://storage.googleapis.com/msgsndr/fwa898U4hQFevOOZ1miD/media/6900735735514e04c80c0dc3.jpeg",
-    "https://storage.googleapis.com/msgsndr/fwa898U4hQFevOOZ1miD/media/6900735082533b472341679b.jpeg",
-    "https://storage.googleapis.com/msgsndr/fwa898U4hQFevOOZ1miD/media/6900733c82533be28f41661f.jpeg",
-    "https://storage.googleapis.com/msgsndr/fwa898U4hQFevOOZ1miD/media/6900734835514ea01e0c0cc4.jpeg"
+    "https://storage.googleapis.com/msgsndr/fwa898U4hQFevOOZ1miD/media/6900711f82533b3ea4412bb6.jpeg",
+    "https://storage.googleapis.com/msgsndr/fwa898U4hQFevOOZ1miD/media/6900713842187b17cad741cd.jpeg",
+    "https://storage.googleapis.com/msgsndr/fwa898U4hQFevOOZ1miD/media/68c048fffbf3b6b97ec65dd9.jpeg"
   ];
 
   // YouTube video URLs
@@ -354,18 +352,17 @@ const ConfettiLandingPage = ({ onShowForm }) => {
               </div>
 
               {/* Text Content Right */}
-              <div className="w-full md:w-1/2 text-center md:text-left">
-                <h3 className="text-3xl md:text-4xl font-bold mb-6 text-white">
+              <div className="w-full md:w-1/2 text-center md:text-center">
+                <h3 className="text-3xl md:text-5xl font-bold mb-6 text-white">
                   高效连结
                 </h3>
-                <div className="space-y-3 text-white text-base md:text-lg leading-relaxed">
-                  <p>打破传统社交的阻碍，</p>
-                  <p>以轻松欢愉的交流方式</p>
-                  <p>快速拉近人与人之间</p>
-                  <p className="mt-6">通过专业的</p>
-                  <p>现场主动化与互动环节</p>
-                  <p>确保每个人都有机会</p>
-                  <p>与更多志同道合的伙伴交流</p>
+                <div className="space-y-1 text-white text-base md:text-lg leading-relaxed">
+                  <p>打破传统社交的沉闷，</p>
+                  <p>以轻松愉悦的方式，</p>
+                  <p>促进深入对话</p>
+                  <p className="mt-6">通过游戏让</p>
+                  <p>现场破冰互动交流，</p>
+                  <p>增强互动产生未来合作机会</p>
                 </div>
               </div>
             </div>
@@ -420,49 +417,22 @@ const ConfettiLandingPage = ({ onShowForm }) => {
               </div>
 
               {/* Text Content Left */}
-              <div className="w-full md:w-1/2 text-center md:text-left">
-                <h3 className="text-3xl md:text-4xl font-bold mb-6 text-white">
+              <div className="w-full md:w-1/2 text-center md:text-center">
+                <h3 className="text-4xl md:text-5xl font-bold mb-6 text-white">
                   轻松交流
                 </h3>
-                <div className="space-y-3 text-white text-base md:text-lg leading-relaxed">
-                  <p>宝贵是这样的礼中，</p>
-                  <p>做最善意地见到人</p>
-                  <p>致友无往而不乐宴会场</p>
-                  <p className="mt-6">轻松实现价值交换的目标</p>
-                  <p>实现了真聚散两全</p>
-                  <p>轻松又欢乐的交往交流</p>
+                <div className="space-y-1 text-white text-base md:text-lg leading-relaxed">
+                  <p>高质量的环境中，</p>
+                  <p>精准拓展您的人脉，</p>
+                  <p>获取可持续的合作机会</p>
+                  <p className="mt-6">体验高端环境结合不同</p>
+                  <p>美酒美食拓展人脉，</p>
+                  <p>体验舒适欢乐进行交流。</p>
                 </div>
               </div>
             </div>
 
-            {/* YouTube Videos Section */}
-            <div className="space-y-12 md:space-y-16 mt-16">
-              {/* First YouTube Video */}
-              <div className="max-w-5xl mx-auto">
-                <div className="relative rounded-xl overflow-hidden shadow-2xl border border-pink-500/30 shadow-[0_0_40px_rgba(236,72,153,0.3)]" style={{ paddingBottom: '56.25%', height: 0 }}>
-                  <iframe
-                    src={youtubeVideos[0]}
-                    title="Event video 1"
-                    className="absolute top-0 left-0 w-full h-full"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  ></iframe>
-                </div>
-              </div>
 
-              {/* Second YouTube Video */}
-              <div className="max-w-5xl mx-auto">
-                <div className="relative rounded-xl overflow-hidden shadow-2xl border border-pink-500/30 shadow-[0_0_40px_rgba(236,72,153,0.3)]" style={{ paddingBottom: '56.25%', height: 0 }}>
-                  <iframe
-                    src={youtubeVideos[1]}
-                    title="Event video 2"
-                    className="absolute top-0 left-0 w-full h-full"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  ></iframe>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -534,13 +504,13 @@ const ConfettiLandingPage = ({ onShowForm }) => {
             {/* Left side - Content */}
             <div className="lg:w-1/2 text-center lg:text-left">
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 md:mb-4 bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
-                Confetti Circle Club 4.0
+                Confetti Circle Club 5.0
               </h2>
               <p className="text-lg md:text-xl mb-2">500+ 企业家 · 创新者 · 行业领袖齐聚</p>
               <p className="text-base md:text-lg mb-4 md:mb-6 text-purple-300">连接 · 启发 · 转化</p>
               
               <div className="bg-black/60 backdrop-blur-md rounded-xl p-6 md:p-8 mb-6 md:mb-8 border border-pink-500/30 shadow-[0_0_30px_rgba(236,72,153,0.2)] text-sm md:text-base">
-                <p className="mb-2 text-gray-300"><strong className="text-pink-400">日期:</strong> 11月26日 (Wednesday)</p>
+                <p className="mb-2 text-gray-300"><strong className="text-pink-400">日期:</strong> 12月22日 (Wednesday)</p>
                 <p className="mb-2 text-gray-300"><strong className="text-pink-400">时间:</strong> 5:30 PM – 10:00 PM</p>
                 <p className="mb-2 text-gray-300"><strong className="text-pink-400">门票 RM159</strong> (RM150 + 6%sst /pax)</p>
                 <p className="mb-2 text-gray-300"><strong className="text-pink-400">Confetti KL</strong> (Mines 2, Seri Kembangan)</p>
