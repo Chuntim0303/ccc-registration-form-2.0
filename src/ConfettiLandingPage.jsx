@@ -263,17 +263,17 @@ const sponsorLogos = [
       {/* MEDIA SECTION - Now with static images */}
       <section className="py-20 md:py-32 px-4 relative z-10 bg-gradient-to-b from-transparent via-purple-900/10 to-transparent">
         <div className="max-w-7xl mx-auto">
-<div className="text-center mb-20">
-  <h2 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
-    为什么选择 Confetti Circle Club
-  </h2>
-  <p className="mt-6 text-2xl md:text-3xl text-white">
-    连接资源 · 共创价值 · 实现突破
-  </p>
-  <p className="mt-4 text-lg md:text-xl text-purple-200 max-w-3xl mx-auto leading-relaxed">
-    精准定位您的需求，为您提供最具价值的商业机遇
-  </p>
-</div>
+        <div className="text-center mb-20">
+          <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
+            Confetti Circle Club 从 1.0 到 3.0
+          </h2>
+          <p className="mt-6 text-2xl md:text-3xl text-white">
+            已汇聚 <span className="font-black text-pink-400">1500+</span> 位行业顶尖精英
+          </p>
+          <p className="mt-4 text-lg md:text-xl text-purple-200 max-w-3xl mx-auto leading-relaxed">
+            每一次跨界升圈，都为成员开启战略合作与资源整合的新篇章
+          </p>
+        </div>
 
           <div className="space-y-24 md:space-y-32">
 
@@ -286,11 +286,11 @@ const sponsorLogos = [
               </div>
               <div className="w-full md:w-1/2 text-center md:text-left">
                 <h3 className="text-4xl md:text-5xl font-bold mb-8">适合人群</h3>
-                  <p className="text-lg leading-relaxed">
-                    - 寻求跨界资源、寻找联合创始人或商业落地伙伴的人。<br /><br />
-                    - 希望拓展用户渠道、探索新市场与合作模式的实操型决策者。<br /><br />
-                    - 希望借力跨界合作提升品牌影响力与用户转化的营销者。<br /><br />
-                    - 寻找跨领域合作场景或产品落地机会的执行者。
+                  <p className="text-sm leading-relaxed">
+                    • 寻求跨界资源、寻找联合创始人或商业落地伙伴的人。<br /><br />
+                    • 希望拓展用户渠道、探索新市场与合作模式的实操型决策者。<br /><br />
+                    • 希望借力跨界合作提升品牌影响力与用户转化的营销者。<br /><br />
+                    • 寻找跨领域合作场景或产品落地机会的执行者。
                   </p>
                 </div>
             </div>
@@ -304,10 +304,10 @@ const sponsorLogos = [
   </div>
   <div className="w-full md:w-1/2 text-center md:text-right">
     <h3 className="text-4xl md:text-5xl font-bold mb-8">为什么选择参与我们？</h3>
-    <p className="text-lg leading-relaxed">
-      - 汇聚多样化的资源与人脉网络，<br className="block md:hidden" />为参与者提供更加广阔的机会平台。<br /><br />
-      - 交流后通过联系促进资源共享，<br className="block md:hidden" />展开潜在合作机会，实现高效的商业。<br /><br />
-      - 活动设计结合高质圈子<br className="block md:hidden" />以及欢乐互动环节更轻松群展开交流。
+    <p className="text-sm leading-relaxed">
+      • 汇聚多样化的资源与人脉网络，<br className="block md:hidden" />为参与者提供更加广阔的机会平台。<br /><br />
+      • 交流后通过联系促进资源共享，<br className="block md:hidden" />展开潜在合作机会，实现高效的商业。<br /><br />
+      • 活动设计结合高质圈子<br className="block md:hidden" />以及欢乐互动环节更轻松群展开交流。
     </p>
   </div>
 </div>
@@ -321,10 +321,10 @@ const sponsorLogos = [
   </div>
   <div className="w-full md:w-1/2 text-center md:text-left">
     <h3 className="text-4xl md:text-5xl font-bold mb-8">提供企业赞助战略</h3>
-    <p className="text-lg leading-relaxed">
-      - 丰富的官方媒体资源和线下平台合作，<br className="block md:hidden" />为企业打造全方位的宣传推广渠道。<br /><br />
-      - 为企业策划专属的品牌宣传活动<br className="block md:hidden" />助力企业提升影响力，增强品牌认知。<br /><br />
-      - 实现广泛的分享与传播。<br className="block md:hidden" />助力企业实现更大的发展和成功。
+    <p className="text-sm leading-relaxed">
+      • 丰富的官方媒体资源和线下平台合作，<br className="block md:hidden" />为企业打造全方位的宣传推广渠道。<br /><br />
+      • 为企业策划专属的品牌宣传活动<br className="block md:hidden" />助力企业提升影响力，增强品牌认知。<br /><br />
+      • 实现广泛的分享与传播。<br className="block md:hidden" />助力企业实现更大的发展和成功。
     </p>
   </div>
 </div>
