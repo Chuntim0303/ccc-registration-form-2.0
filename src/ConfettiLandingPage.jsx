@@ -215,6 +215,51 @@ const sponsorLogos = [
         </div>
       </section>
 
+{/* SPONSORS MARQUEE - 鼠标悬停时加速 */}
+<section className="py-16 md:py-24 relative overflow-hidden bg-black/50">
+  <div className="max-w-7xl mx-auto px-4 mb-12 text-center">
+    <h2 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
+      多元商业合作战略
+    </h2>
+  </div>
+
+  <div className="relative group"> {/* ← 关键：加 group */}
+    {/* Left Fade */}
+    <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-24 md:w-48 z-10 bg-gradient-to-r from-black to-transparent"></div>
+    {/* Right Fade */}
+    <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-24 md:w-48 z-10 bg-gradient-to-l from-black to-transparent"></div>
+
+    {/* Marquee Track - 使用 CSS 变量控制速度 */}
+    <div className="overflow-hidden">
+      <div 
+        className="flex animate-marquee whitespace-nowrap
+                   group-hover:animation-play-state-paused 
+                   group-hover:[animation-duration:8s] 
+                   [animation-duration:60s]" 
+                   // ↑ 正常 60秒一圈，悬停时变成 8秒（超快）+ 可选暂停
+      >
+        {/* Duplicate twice for seamless loop */}
+        {[...Array(2)].map((_, setIndex) => (
+          <div key={setIndex} className="flex shrink-0 items-center gap-8 md:gap-16">
+            {sponsorLogos.map((logo, i) => (
+              <div
+                key={`${setIndex}-${i}`}
+                className="flex-shrink-0 px-6 md:px-10 py-5 md:py-7 bg-white/5 backdrop-blur-md rounded-2xl border border-pink-500/20 hover:border-pink-400/60 transition-all duration-300 hover:scale-110 hover:shadow-2xl hover:shadow-pink-500/20"
+              >
+                <img
+                  src={logo}
+                  alt={`Partner ${i + 1}`}
+                  className="h-10 md:h-14 w-auto object-contain opacity-75 hover:opacity-100 drop-shadow-lg hover:drop-shadow-2xl transition-all duration-500 hover:scale-110"
+                />
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
       {/* MEDIA SECTION - Now with static images */}
       <section className="py-20 md:py-32 px-4 relative z-10 bg-gradient-to-b from-transparent via-purple-900/10 to-transparent">
         <div className="max-w-7xl mx-auto">
@@ -275,45 +320,7 @@ const sponsorLogos = [
         </div>
       </section>
 
-{/* SPONSORS MARQUEE - Smooth Infinite Scroll (Right → Left) */}
-<section className="py-16 md:py-24 relative overflow-hidden bg-black/50">
-  <div className="max-w-7xl mx-auto px-4 mb-12 text-center">
-    <h2 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
-      我们的合作伙伴
-    </h2>
-  </div>
 
-  <div className="relative">
-    {/* Left Fade */}
-    <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-24 md:w-48 z-10 bg-gradient-to-r from-black to-transparent"></div>
-    {/* Right Fade */}
-    <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-24 md:w-48 z-10 bg-gradient-to-l from-black to-transparent"></div>
-
-    {/* Marquee Track */}
-    <div className="overflow-hidden">
-      <div className="flex animate-marquee whitespace-nowrap">
-        {/* Duplicate the logos twice for seamless loop */}
-        {[...Array(2)].map((_, setIndex) => (
-          <div key={setIndex} className="flex shrink-0 items-center gap-8 md:gap-16">
-            {sponsorLogos.map((logo, i) => (
-              <div
-                key={`${setIndex}-${i}`}
-                className="flex-shrink-0 px-6 md:px-10 py-5 md:py-7 bg-white/5 backdrop-blur-md rounded-2xl border border-pink-500/20 hover:border-pink-400/60 transition-all duration-300 hover:scale-110 hover:shadow-2xl hover:shadow-pink-500/20"
-              >
-                <img
-                  src={logo}
-                  alt={`Partner ${i + 1}`}
-                  className="h-10 md:h-14 w-auto object-contain filter brightness-0 invert opacity-70 hover:opacity-100 transition-opacity"
-                  loading="lazy"
-                />
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-    </div>
-  </div>
-</section>
 
       {/* TESTIMONIALS */}
       <section className="py-20 md:py-28 px-4 relative z-10">
