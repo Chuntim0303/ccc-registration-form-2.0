@@ -145,77 +145,22 @@ const ConfettiLandingPage = ({ onShowForm }) => {
         </div>
       </div>
 
-      {/* Hero Banner Section */}
-      <section className="relative min-h-[70vh] md:min-h-[80vh] px-4 z-10 flex items-center justify-center py-16 md:py-24">
-        <div className="absolute inset-0 bg-gradient-to-b from-pink-500/20 via-purple-500/20 to-transparent"></div>
+      {/* Hero Banner Section with Poster Image */}
+      <section className="relative w-full z-10">
+        {/* Background overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black z-10"></div>
 
-        <div className="relative z-10 text-center max-w-5xl mx-auto">
-          {/* Logo/Brand */}
-          <div className="mb-6 md:mb-8">
-            <img
-              src="/ccc_logo.png"
-              alt="Confetti Circle Club Logo"
-              className="w-32 h-32 md:w-40 md:h-40 mx-auto drop-shadow-[0_0_40px_rgba(236,72,153,0.6)]"
-            />
-          </div>
-
-          {/* Main Title */}
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 bg-gradient-to-r from-pink-400 via-purple-400 to-pink-400 bg-clip-text text-transparent animate-gradient">
-            Confetti Circle Club 5.0
-          </h1>
-
-          {/* Subtitle */}
-          <p className="text-xl md:text-3xl lg:text-4xl mb-3 md:mb-4 text-white font-semibold">
-            500+ 企业家 · 创新者 · 行业领袖齐聚
-          </p>
-
-          <p className="text-lg md:text-2xl mb-8 md:mb-10 text-purple-300">
-            连接 · 启发 · 转化
-          </p>
-
-          {/* Key Event Details in Banner Style */}
-          <div className="bg-gradient-to-r from-pink-500/30 via-purple-500/30 to-pink-500/30 backdrop-blur-md rounded-2xl p-6 md:p-8 mb-8 md:mb-10 border border-pink-500/50 shadow-[0_0_50px_rgba(236,72,153,0.4)] max-w-3xl mx-auto">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-around gap-4 md:gap-6 text-center">
-              <div className="flex items-center justify-center gap-2">
-                <Calendar size={24} className="text-pink-400 flex-shrink-0" />
-                <div className="text-left">
-                  <div className="text-sm text-purple-300">Date</div>
-                  <div className="text-base md:text-lg font-bold text-white">12月22日</div>
-                </div>
-              </div>
-              <div className="flex items-center justify-center gap-2">
-                <Clock size={24} className="text-pink-400 flex-shrink-0" />
-                <div className="text-left">
-                  <div className="text-sm text-purple-300">Time</div>
-                  <div className="text-base md:text-lg font-bold text-white">5:30PM - 10:00PM</div>
-                </div>
-              </div>
-              <div className="flex items-center justify-center gap-2">
-                <MapPin size={24} className="text-pink-400 flex-shrink-0" />
-                <div className="text-left">
-                  <div className="text-sm text-purple-300">Venue</div>
-                  <div className="text-base md:text-lg font-bold text-white">Confetti KL</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* CTA Button */}
-          <button
-            onClick={onShowForm}
-            className="bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold py-4 md:py-5 px-12 md:px-16 rounded-full hover:from-pink-600 hover:to-purple-600 transition-all transform hover:scale-105 shadow-[0_0_50px_rgba(236,72,153,0.7)] border-2 border-pink-400/50 text-lg md:text-xl"
-          >
-            立即报名 REGISTER NOW
-          </button>
-
-          {/* Ticket Price Badge */}
-          <div className="mt-6 inline-block bg-black/60 backdrop-blur-md rounded-full px-6 py-2 border border-pink-500/30">
-            <span className="text-pink-400 font-semibold">门票: RM159 (included 6% sst)</span>
-          </div>
+        {/* Poster Image as Hero Banner */}
+        <div className="relative w-full">
+          <img
+            src="/poster.png"
+            alt="Confetti Circle Club 5.0"
+            className="w-full h-auto object-cover object-center"
+          />
         </div>
 
         {/* Scroll Down Indicator – Mobile Only */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 animate-bounce md:hidden">
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 animate-bounce md:hidden z-20">
           <ChevronDown className="w-8 h-8 text-pink-400" />
         </div>
       </section>
