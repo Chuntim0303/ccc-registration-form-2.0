@@ -36,6 +36,28 @@ const ConfettiLandingPage = ({ onShowForm }) => {
     "https://www.youtube.com/embed/imoH3aai_4s"
   ];
 
+const sponsorLogos = [
+  "/logos/logo1.png",
+  "/logos/logo2.png",
+  "/logos/logo3.png",
+  "/logos/logo4.png",
+  "/logos/logo5.png",
+  "/logos/logo6.png",
+  "/logos/logo7.png",
+  "/logos/logo8.png",
+  "/logos/logo9.png",
+  "/logos/logo10.png",
+  "/logos/logo11.png",
+  "/logos/logo12.png",
+  "/logos/logo13.png",
+  "/logos/logo14.png",
+  "/logos/logo15.png",
+  "/logos/logo16.png",
+  "/logos/logo17.png",
+
+  // Add as many as you have
+];
+
   const testimonials = [
     {
       name: "Carrie Lee",
@@ -253,91 +275,45 @@ const ConfettiLandingPage = ({ onShowForm }) => {
         </div>
       </section>
 
-      {/* SPONSORS MARQUEE */}
-      <section className="py-16 md:py-24 relative z-10 overflow-hidden">
-        <div className="max-w-7xl mx-auto mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-center bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
-            我们的合作伙伴
-          </h2>
-        </div>
+{/* SPONSORS MARQUEE - Smooth Infinite Scroll (Right → Left) */}
+<section className="py-16 md:py-24 relative overflow-hidden bg-black/50">
+  <div className="max-w-7xl mx-auto px-4 mb-12 text-center">
+    <h2 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
+      我们的合作伙伴
+    </h2>
+  </div>
 
-        <div className="relative w-full overflow-hidden">
-          {/* Gradient overlays for fade effect */}
-          <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none"></div>
-          <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none"></div>
+  <div className="relative">
+    {/* Left Fade */}
+    <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-24 md:w-48 z-10 bg-gradient-to-r from-black to-transparent"></div>
+    {/* Right Fade */}
+    <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-24 md:w-48 z-10 bg-gradient-to-l from-black to-transparent"></div>
 
-          {/* Marquee container */}
-          <div className="flex animate-marquee">
-            {/* First set of sponsors */}
-            <div className="flex items-center justify-around min-w-full shrink-0">
-              <div className="mx-8 px-8 py-6 bg-gradient-to-br from-pink-500/10 to-purple-500/10 backdrop-blur-md rounded-xl border border-pink-500/30 hover:border-pink-500/60 transition-all hover:scale-105">
-                <div className="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent whitespace-nowrap">
-                  SPONSOR 1
-                </div>
+    {/* Marquee Track */}
+    <div className="overflow-hidden">
+      <div className="flex animate-marquee whitespace-nowrap">
+        {/* Duplicate the logos twice for seamless loop */}
+        {[...Array(2)].map((_, setIndex) => (
+          <div key={setIndex} className="flex shrink-0 items-center gap-8 md:gap-16">
+            {sponsorLogos.map((logo, i) => (
+              <div
+                key={`${setIndex}-${i}`}
+                className="flex-shrink-0 px-6 md:px-10 py-5 md:py-7 bg-white/5 backdrop-blur-md rounded-2xl border border-pink-500/20 hover:border-pink-400/60 transition-all duration-300 hover:scale-110 hover:shadow-2xl hover:shadow-pink-500/20"
+              >
+                <img
+                  src={logo}
+                  alt={`Partner ${i + 1}`}
+                  className="h-10 md:h-14 w-auto object-contain filter brightness-0 invert opacity-70 hover:opacity-100 transition-opacity"
+                  loading="lazy"
+                />
               </div>
-              <div className="mx-8 px-8 py-6 bg-gradient-to-br from-pink-500/10 to-purple-500/10 backdrop-blur-md rounded-xl border border-pink-500/30 hover:border-pink-500/60 transition-all hover:scale-105">
-                <div className="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent whitespace-nowrap">
-                  SPONSOR 2
-                </div>
-              </div>
-              <div className="mx-8 px-8 py-6 bg-gradient-to-br from-pink-500/10 to-purple-500/10 backdrop-blur-md rounded-xl border border-pink-500/30 hover:border-pink-500/60 transition-all hover:scale-105">
-                <div className="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent whitespace-nowrap">
-                  SPONSOR 3
-                </div>
-              </div>
-              <div className="mx-8 px-8 py-6 bg-gradient-to-br from-pink-500/10 to-purple-500/10 backdrop-blur-md rounded-xl border border-pink-500/30 hover:border-pink-500/60 transition-all hover:scale-105">
-                <div className="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent whitespace-nowrap">
-                  SPONSOR 4
-                </div>
-              </div>
-              <div className="mx-8 px-8 py-6 bg-gradient-to-br from-pink-500/10 to-purple-500/10 backdrop-blur-md rounded-xl border border-pink-500/30 hover:border-pink-500/60 transition-all hover:scale-105">
-                <div className="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent whitespace-nowrap">
-                  SPONSOR 5
-                </div>
-              </div>
-              <div className="mx-8 px-8 py-6 bg-gradient-to-br from-pink-500/10 to-purple-500/10 backdrop-blur-md rounded-xl border border-pink-500/30 hover:border-pink-500/60 transition-all hover:scale-105">
-                <div className="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent whitespace-nowrap">
-                  SPONSOR 6
-                </div>
-              </div>
-            </div>
-
-            {/* Duplicate set for seamless loop */}
-            <div className="flex items-center justify-around min-w-full shrink-0">
-              <div className="mx-8 px-8 py-6 bg-gradient-to-br from-pink-500/10 to-purple-500/10 backdrop-blur-md rounded-xl border border-pink-500/30 hover:border-pink-500/60 transition-all hover:scale-105">
-                <div className="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent whitespace-nowrap">
-                  SPONSOR 1
-                </div>
-              </div>
-              <div className="mx-8 px-8 py-6 bg-gradient-to-br from-pink-500/10 to-purple-500/10 backdrop-blur-md rounded-xl border border-pink-500/30 hover:border-pink-500/60 transition-all hover:scale-105">
-                <div className="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent whitespace-nowrap">
-                  SPONSOR 2
-                </div>
-              </div>
-              <div className="mx-8 px-8 py-6 bg-gradient-to-br from-pink-500/10 to-purple-500/10 backdrop-blur-md rounded-xl border border-pink-500/30 hover:border-pink-500/60 transition-all hover:scale-105">
-                <div className="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent whitespace-nowrap">
-                  SPONSOR 3
-                </div>
-              </div>
-              <div className="mx-8 px-8 py-6 bg-gradient-to-br from-pink-500/10 to-purple-500/10 backdrop-blur-md rounded-xl border border-pink-500/30 hover:border-pink-500/60 transition-all hover:scale-105">
-                <div className="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent whitespace-nowrap">
-                  SPONSOR 4
-                </div>
-              </div>
-              <div className="mx-8 px-8 py-6 bg-gradient-to-br from-pink-500/10 to-purple-500/10 backdrop-blur-md rounded-xl border border-pink-500/30 hover:border-pink-500/60 transition-all hover:scale-105">
-                <div className="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent whitespace-nowrap">
-                  SPONSOR 5
-                </div>
-              </div>
-              <div className="mx-8 px-8 py-6 bg-gradient-to-br from-pink-500/10 to-purple-500/10 backdrop-blur-md rounded-xl border border-pink-500/30 hover:border-pink-500/60 transition-all hover:scale-105">
-                <div className="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent whitespace-nowrap">
-                  SPONSOR 6
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
-        </div>
-      </section>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
 
       {/* TESTIMONIALS */}
       <section className="py-20 md:py-28 px-4 relative z-10">
