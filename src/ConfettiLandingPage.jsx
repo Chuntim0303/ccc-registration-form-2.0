@@ -115,7 +115,7 @@ const sponsorLogos = [
         <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/30 to-black/80 z-20 pointer-events-none md:block hidden"></div>
         
         <img
-          src="/poster.jpeg"
+          src="/poster.jpg"
           alt="Confetti Circle Club 5.0"
           className="w-full h-auto max-h-[60vh] md:max-h-[70vh] object-cover object-center object-[center_25%] md:object-[center_40%]"
         />
@@ -177,7 +177,7 @@ const sponsorLogos = [
       {/* EVENT CARD + VIDEO */}
       <section className="relative px-4 py-12 md:py-20 z-10">
         <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-12 bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-6 bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
             参加 Confetti Circle Club 5.0<br />连接顶尖商业精英
           </h2>
 
@@ -194,10 +194,10 @@ const sponsorLogos = [
           </div>
 
           <div className="bg-gradient-to-br from-pink-600/20 to-purple-600/20 backdrop-blur-md rounded-3xl p-8 md:p-12 shadow-2xl border border-pink-500/30 max-w-4xl mx-auto">
-            <h1 className="text-3xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
+            <h1 className="text-2xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
               Confetti Circle Club 5.0
             </h1>
-            <p className="text-xl mb-3">500+ 企业家 · 创新者 · 行业领袖齐聚</p>
+            <p className="text-l mb-3">500+ 企业家 · 创新者 · 行业领袖齐聚</p>
             <p className="text-lg mb-8 text-purple-300">连接 · 启发 · 转化</p>
             
             <div className="space-y-4 text-left max-w-md mx-auto mb-10">
@@ -286,35 +286,54 @@ const sponsorLogos = [
               </div>
               <div className="w-full md:w-1/2 text-center md:text-left">
                 <h3 className="text-4xl md:text-5xl font-bold mb-8">高效连结</h3>
-                <p className="text-lg leading-relaxed">打破传统社交的沉闷，以轻松愉悦的方式促进深入对话<br />通过游戏让现场破冰互动交流，增强互动产生未来合作机会</p>
-              </div>
+                  <p className="text-lg leading-relaxed mobile-comma-break">
+                    打破传统社交的沉闷，以轻松愉悦的方式促进深入对话，通过游戏让现场破冰互动交流，增强互动产生未来合作机会
+                  </p>              
+                </div>
             </div>
 
-            {/* Row 2 - Image Right */}
-            <div className="flex flex-col md:flex-row-reverse gap-12 items-center">
-              <div className="w-full md:w-1/2">
-                <div className="rounded-xl shadow-2xl border border-pink-500/30 overflow-hidden">
-                  <img src="/media2.jpeg" alt="轻松交流" className="w-full h-auto object-cover" />
-                </div>
-              </div>
-              <div className="w-full md:w-1/2 text-center md:text-right">
-                <h3 className="text-4xl md:text-5xl font-bold mb-8">轻松交流</h3>
-                <p className="text-lg leading-relaxed">高质量的环境中精准拓展您的人脉，获取可持续的合作机会<br />体验高端环境结合美酒美食，舒适欢乐进行交流</p>
-              </div>
-            </div>
+{/* Row 2 - Image Right */}
+<div className="flex flex-col md:flex-row-reverse gap-12 items-center">
+  <div className="w-full md:w-1/2">
+    <div className="rounded-xl shadow-2xl border border-pink-500/30 overflow-hidden">
+      <img src="/media2.jpeg" alt="轻松交流" className="w-full h-auto object-cover" />
+    </div>
+  </div>
+  <div className="w-full md:w-1/2 text-center md:text-right">
+    <h3 className="text-4xl md:text-5xl font-bold mb-8">轻松交流</h3>
+    <p className="text-lg leading-relaxed">
+      高质量的环境中精准拓展您的人脉
+      <span className="hidden md:inline">，</span>
+      <br className="block md:hidden" />
+      获取可持续的合作机会
+      <br className="hidden md:block" />
+      体验高端环境结合美酒美食
+      <span className="hidden md:inline">，</span>
+      <br className="block md:hidden" />
+      舒适欢乐进行交流
+    </p>
+  </div>
+</div>
 
-            {/* Row 3 - New Row (Image Left again) */}
-            <div className="flex flex-col md:flex-row gap-12 items-center">
-              <div className="w-full md:w-1/2">
-                <div className="rounded-xl shadow-2xl border border-pink-500/30 overflow-hidden">
-                  <img src="/media3.jpg" alt="价值共创" className="w-full h-auto object-cover" />
-                </div>
-              </div>
-              <div className="w-full md:w-1/2 text-center md:text-left">
-                <h3 className="text-4xl md:text-5xl font-bold mb-8">价值共创</h3>
-                <p className="text-lg leading-relaxed">每场活动都汇聚不同领域的顶尖人才<br />在这里碰撞思想、分享资源，一次相遇可能成就长期合作</p>
-              </div>
-            </div>
+{/* Row 3 - Image Left */}
+<div className="flex flex-col md:flex-row gap-12 items-center">
+  <div className="w-full md:w-1/2">
+    <div className="rounded-xl shadow-2xl border border-pink-500/30 overflow-hidden">
+      <img src="/media3.jpg" alt="价值共创" className="w-full h-auto object-cover" />
+    </div>
+  </div>
+  <div className="w-full md:w-1/2 text-center md:text-left">
+    <h3 className="text-4xl md:text-5xl font-bold mb-8">价值共创</h3>
+    <p className="text-lg leading-relaxed">
+      每场活动都汇聚不同领域的顶尖人才
+      <br className="hidden md:block" />
+      在这里碰撞思想、分享资源
+      <span className="hidden md:inline">，</span>
+      <br className="block md:hidden" />
+      一次相遇可能成就长期合作
+    </p>
+  </div>
+</div>
 
           </div>
         </div>
