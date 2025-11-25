@@ -253,6 +253,92 @@ const ConfettiLandingPage = ({ onShowForm }) => {
         </div>
       </section>
 
+      {/* SPONSORS MARQUEE */}
+      <section className="py-16 md:py-24 relative z-10 overflow-hidden">
+        <div className="max-w-7xl mx-auto mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-center bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
+            我们的合作伙伴
+          </h2>
+        </div>
+
+        <div className="relative w-full overflow-hidden">
+          {/* Gradient overlays for fade effect */}
+          <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none"></div>
+          <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none"></div>
+
+          {/* Marquee container */}
+          <div className="flex animate-marquee">
+            {/* First set of sponsors */}
+            <div className="flex items-center justify-around min-w-full shrink-0">
+              <div className="mx-8 px-8 py-6 bg-gradient-to-br from-pink-500/10 to-purple-500/10 backdrop-blur-md rounded-xl border border-pink-500/30 hover:border-pink-500/60 transition-all hover:scale-105">
+                <div className="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent whitespace-nowrap">
+                  SPONSOR 1
+                </div>
+              </div>
+              <div className="mx-8 px-8 py-6 bg-gradient-to-br from-pink-500/10 to-purple-500/10 backdrop-blur-md rounded-xl border border-pink-500/30 hover:border-pink-500/60 transition-all hover:scale-105">
+                <div className="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent whitespace-nowrap">
+                  SPONSOR 2
+                </div>
+              </div>
+              <div className="mx-8 px-8 py-6 bg-gradient-to-br from-pink-500/10 to-purple-500/10 backdrop-blur-md rounded-xl border border-pink-500/30 hover:border-pink-500/60 transition-all hover:scale-105">
+                <div className="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent whitespace-nowrap">
+                  SPONSOR 3
+                </div>
+              </div>
+              <div className="mx-8 px-8 py-6 bg-gradient-to-br from-pink-500/10 to-purple-500/10 backdrop-blur-md rounded-xl border border-pink-500/30 hover:border-pink-500/60 transition-all hover:scale-105">
+                <div className="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent whitespace-nowrap">
+                  SPONSOR 4
+                </div>
+              </div>
+              <div className="mx-8 px-8 py-6 bg-gradient-to-br from-pink-500/10 to-purple-500/10 backdrop-blur-md rounded-xl border border-pink-500/30 hover:border-pink-500/60 transition-all hover:scale-105">
+                <div className="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent whitespace-nowrap">
+                  SPONSOR 5
+                </div>
+              </div>
+              <div className="mx-8 px-8 py-6 bg-gradient-to-br from-pink-500/10 to-purple-500/10 backdrop-blur-md rounded-xl border border-pink-500/30 hover:border-pink-500/60 transition-all hover:scale-105">
+                <div className="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent whitespace-nowrap">
+                  SPONSOR 6
+                </div>
+              </div>
+            </div>
+
+            {/* Duplicate set for seamless loop */}
+            <div className="flex items-center justify-around min-w-full shrink-0">
+              <div className="mx-8 px-8 py-6 bg-gradient-to-br from-pink-500/10 to-purple-500/10 backdrop-blur-md rounded-xl border border-pink-500/30 hover:border-pink-500/60 transition-all hover:scale-105">
+                <div className="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent whitespace-nowrap">
+                  SPONSOR 1
+                </div>
+              </div>
+              <div className="mx-8 px-8 py-6 bg-gradient-to-br from-pink-500/10 to-purple-500/10 backdrop-blur-md rounded-xl border border-pink-500/30 hover:border-pink-500/60 transition-all hover:scale-105">
+                <div className="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent whitespace-nowrap">
+                  SPONSOR 2
+                </div>
+              </div>
+              <div className="mx-8 px-8 py-6 bg-gradient-to-br from-pink-500/10 to-purple-500/10 backdrop-blur-md rounded-xl border border-pink-500/30 hover:border-pink-500/60 transition-all hover:scale-105">
+                <div className="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent whitespace-nowrap">
+                  SPONSOR 3
+                </div>
+              </div>
+              <div className="mx-8 px-8 py-6 bg-gradient-to-br from-pink-500/10 to-purple-500/10 backdrop-blur-md rounded-xl border border-pink-500/30 hover:border-pink-500/60 transition-all hover:scale-105">
+                <div className="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent whitespace-nowrap">
+                  SPONSOR 4
+                </div>
+              </div>
+              <div className="mx-8 px-8 py-6 bg-gradient-to-br from-pink-500/10 to-purple-500/10 backdrop-blur-md rounded-xl border border-pink-500/30 hover:border-pink-500/60 transition-all hover:scale-105">
+                <div className="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent whitespace-nowrap">
+                  SPONSOR 5
+                </div>
+              </div>
+              <div className="mx-8 px-8 py-6 bg-gradient-to-br from-pink-500/10 to-purple-500/10 backdrop-blur-md rounded-xl border border-pink-500/30 hover:border-pink-500/60 transition-all hover:scale-105">
+                <div className="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent whitespace-nowrap">
+                  SPONSOR 6
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* TESTIMONIALS */}
       <section className="py-20 md:py-28 px-4 relative z-10">
         <div className="max-w-6xl mx-auto">
