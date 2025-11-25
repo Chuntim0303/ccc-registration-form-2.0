@@ -155,7 +155,7 @@ const ConfettiLandingPage = ({ onShowForm }) => {
           <img
             src="/poster.png"
             alt="Confetti Circle Club 5.0"
-            className="w-full h-auto object-cover object-center"
+            className="w-full h-auto max-h-[60vh] md:max-h-[70vh] object-cover object-top"
           />
         </div>
 
