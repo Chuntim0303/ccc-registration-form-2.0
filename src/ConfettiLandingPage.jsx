@@ -291,23 +291,18 @@ const sponsorLogos = [
 
     {/* Marquee Track */}
     <div className="overflow-hidden">
-      <div className="flex animate-marquee whitespace-nowrap">
-        {/* Duplicate the logos twice for seamless loop */}
-        {[...Array(2)].map((_, setIndex) => (
-          <div key={setIndex} className="flex shrink-0 items-center gap-8 md:gap-16">
-            {sponsorLogos.map((logo, i) => (
-              <div
-                key={`${setIndex}-${i}`}
-                className="flex-shrink-0 px-6 md:px-10 py-5 md:py-7 bg-white/5 backdrop-blur-md rounded-2xl border border-pink-500/20 hover:border-pink-400/60 transition-all duration-300 hover:scale-110 hover:shadow-2xl hover:shadow-pink-500/20"
-              >
-                <img
-                  src={logo}
-                  alt={`Partner ${i + 1}`}
-                  className="h-10 md:h-14 w-auto object-contain filter brightness-0 invert opacity-70 hover:opacity-100 transition-opacity"
-                  loading="lazy"
-                />
-              </div>
-            ))}
+      <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
+        {sponsorLogos.map((logo, i) => (
+          <div
+            key={i}
+            className="flex-shrink-0 px-6 md:px-10 py-5 md:py-7 bg-white/5 backdrop-blur-md rounded-2xl border border-pink-500/20 hover:border-pink-400/60 transition-all duration-300 hover:scale-110 hover:shadow-2xl hover:shadow-pink-500/20"
+          >
+            <img
+              src={logo}
+              alt={`Partner ${i + 1}`}
+              className="h-10 md:h-14 w-auto object-contain filter brightness-0 invert opacity-70 hover:opacity-100 transition-opacity"
+              loading="lazy"
+            />
           </div>
         ))}
       </div>
